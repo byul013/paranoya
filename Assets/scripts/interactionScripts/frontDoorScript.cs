@@ -1,15 +1,12 @@
-using System.Collections;
 using UnityEngine;
 
 public class FrontDoorScript : MonoBehaviour
 {
-    [SerializeField] private GameObject peepHoleCam;
-    [SerializeField] private float transitionSpeed = 5f;
-
-    private Camera mainCam;
-    private Transform originalCamParent;
-    private Vector3 originalCamPos;
-    private Quaternion originalCamRot;
+    [Header("Camera References")]
+    [Tooltip("Drag your Main Player Camera here (or leave empty to find automatically)")]
+    [SerializeField] private Camera mainCam;
+    [Tooltip("Drag the dedicated Peephole Camera here")]
+    [SerializeField] private Camera peepHoleCam;
 
     private bool isPeeking = false;
     private bool bellRang = false;
@@ -17,7 +14,15 @@ public class FrontDoorScript : MonoBehaviour
 
     private void Start()
     {
-        mainCam = Camera.main;
+        if (mainCam == null)
+        {
+            mainCam = Camera.main;
+        }
+
+        if (peepHoleCam != null)
+        {
+            peepHoleCam.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -31,53 +36,19 @@ public class FrontDoorScript : MonoBehaviour
         }
     }
 
-    private void TogglePeepHole()
+    public void TogglePeepHole()
     {
         isPeeking = !isPeeking;
-        StopAllCoroutines();
 
-        if (isPeeking)
+        if (mainCam != null)
         {
-            originalCamParent = mainCam.transform.parent;
-            originalCamPos = mainCam.transform.localPosition;
-            originalCamRot = mainCam.transform.localRotation;
-
-            mainCam.transform.SetParent(null);
-
-            StartCoroutine(MoveCamera(peepHoleCam.transform.position, peepHoleCam.transform.rotation));
-        }
-        else
-        {
-            StartCoroutine(ReturnCameraToPlayer());
-        }
-    }
-
-    private IEnumerator MoveCamera(Vector3 targetPos, Quaternion targetRot)
-    {
-        while (Vector3.Distance(mainCam.transform.position, targetPos) > 0.01f)
-        {
-            mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, targetPos, Time.deltaTime * transitionSpeed);
-            mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, targetRot, Time.deltaTime * transitionSpeed);
-            yield return null;
+            mainCam.gameObject.SetActive(!isPeeking);
         }
 
-        mainCam.transform.position = targetPos;
-        mainCam.transform.rotation = targetRot;
-    }
-
-    private IEnumerator ReturnCameraToPlayer()
-    {
-        mainCam.transform.SetParent(originalCamParent);
-
-        while (Vector3.Distance(mainCam.transform.localPosition, originalCamPos) > 0.01f)
+        if (peepHoleCam != null)
         {
-            mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, originalCamPos, Time.deltaTime * transitionSpeed);
-            mainCam.transform.localRotation = Quaternion.Slerp(mainCam.transform.localRotation, originalCamRot, Time.deltaTime * transitionSpeed);
-            yield return null;
+            peepHoleCam.gameObject.SetActive(isPeeking);
         }
-
-        mainCam.transform.localPosition = originalCamPos;
-        mainCam.transform.localRotation = originalCamRot;
     }
 
     private void OnTriggerEnter(Collider other)

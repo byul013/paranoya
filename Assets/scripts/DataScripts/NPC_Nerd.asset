@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aa3b2c53c3196a4d957d149f0cc3e6f, type: 3}
+  m_Name: NPC_Nerd
+  m_EditorClassIdentifier: 
+  npcName: Nerd
+  npcSprite: {fileID: 21300000, guid: 90cd2cc132f435344bc6dd0af955376c, type: 3}
+  doorbellSound: {fileID: 8300000, guid: de775138f0f360f4f9b791674017344c, type: 3}
+  isGuaranteedGood: 0
+  goodChancePercentage: 50
+  visitDialoguesGood: []
+  visitDialoguesBad: []
+  hasBeenEvaluated: 1
+  isGood: 0
+  visitCount: 0
