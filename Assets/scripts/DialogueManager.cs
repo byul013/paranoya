@@ -11,48 +11,98 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Transform choicesContainer;
     [SerializeField] private GameObject choiceButtonPrefab;
 
-    [Header("end dicision buttons")]
-    [SerializeField] private GameObject actionButtonPanel;
+    [Header("End Decision Buttons")]
+    [SerializeField] private GameObject actionButtonsPanel;
 
     private NPCSpawn spawner;
-    private NPCData currentNpc;
+    private NPCData currentNPC;
     private DialogueNode currentNode;
+
+    private void Update()
+    {
+        if (dialoguePanel != null && dialoguePanel.activeSelf)
+        {
+            if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E))
+            {
+                // If there are no choice buttons active, try advancing
+                if (currentNode != null && (currentNode.choices == null || currentNode.choices.Count == 0))
+                {
+                    AdvanceIfPossible();
+                }
+            }
+        }
+    }
 
     public void StartDialogue(NPCData npc, NPCSpawn npcSpawner)
     {
-        currentNpc = npc;
+        currentNPC = npc;
         spawner = npcSpawner;
 
-        dialoguePanel.SetActive(true);
-        npcNameText.text = currentNpc.npcName;
+        if (dialoguePanel != null) dialoguePanel.SetActive(true);
+        if (npcNameText != null) npcNameText.text = currentNPC.npcName;
 
-        currentNode = currentNpc.GetStartingDialogueNode();
-        DisplayNode(currentNode);
+        SetCursorState(true);
+
+        currentNode = currentNPC.GetStartingDialogueNode();
+
+        if (currentNode != null)
+        {
+            DisplayNode(currentNode);
+        }
+        else
+        {
+            Debug.LogError($"[DialogueManager] No starting DialogueNode assigned on {currentNPC.npcName}!");
+        }
     }
 
-    public DisplayNode(DialogueNode node)
+    public void DisplayNode(DialogueNode node)
     {
         currentNode = node;
-        npcDialogueText.text = node.npcStatement;
+
+        if (npcDialogueText != null)
+            npcDialogueText.text = node.npcStatement;
+
         foreach (Transform child in choicesContainer)
         {
             Destroy(child.gameObject);
         }
 
-        if (actionButtonPanel != null) actionButtonPanel.SetActive(false);
+        if (actionButtonsPanel != null)
+            actionButtonsPanel.SetActive(false);
 
-        if (node.endOfConversation || node.choices == null || node.choices.Count == 0)
+        if (node.endOfConversation)
         {
-            if (actionButtonPanel != null) actionButtonPanel.SetActive(true);
+            if (actionButtonsPanel != null)
+            {
+                actionButtonsPanel.SetActive(true);
+            }
             return;
         }
 
-        foreach (DialogueChoice choice in node.choices)
+        if (node.choices != null && node.choices.Count > 0)
         {
-            GameObject btnObj = Instantiate(choiceButtonPrefab, choicesContainer);
-            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = choice.choiceText;
+            Debug.Log($"[DialogueManager] Spawning {node.choices.Count} choices for node: {node.npcStatement}");
+            foreach (DialogueChoice choice in node.choices)
+            {
+                GameObject btnObj = Instantiate(choiceButtonPrefab, choicesContainer);
+                btnObj.SetActive(true);
 
-            btnObj.GetComponent<Button>().onClick.AddListener(() => OnChoiceSelected(choice));
+                TextMeshProUGUI btnText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+                if (btnText != null)
+                {
+                    btnText.text = choice.choiceText;
+                }
+
+                Button btnComponent = btnObj.GetComponent<Button>();
+                if (btnComponent != null)
+                {
+                    btnComponent.onClick.AddListener(() => OnChoiceSelected(choice));
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[DialogueManager] This node has NO choices attached to it in NPCData!");
         }
     }
 
@@ -62,21 +112,60 @@ public class DialogueManager : MonoBehaviour
         {
             DisplayNode(choice.nextNode);
         }
+        else
+        {
+            Debug.LogWarning("[DialogueManager] Choice selected but nextNode is null!");
+        }
+    }
+
+    private void AdvanceIfPossible()
+    {
+        if (currentNode.endOfConversation) return;
+
+        if (currentNode.choices != null && currentNode.choices.Count == 1)
+        {
+            if (currentNode.choices[0].nextNode != null)
+            {
+                DisplayNode(currentNode.choices[0].nextNode);
+            }
+        }
+    }
+
+    public void EndDialogue()
+    {
+        if (dialoguePanel != null) dialoguePanel.SetActive(false);
+        if (actionButtonsPanel != null) actionButtonsPanel.SetActive(false);
+
+        SetCursorState(false);
     }
 
     public void OnClickLetIn()
     {
-        dialoguePanel.SetActive(false);
-        currentNpc.IncrementVisitCount();
-
-        spawner.OnVisitorFinished(npcDied: !currentNpc.isGood);
+        EndDialogue();
+        currentNPC.IncrementVisitCount();
+        if (spawner != null) spawner.OnVisitorFinished(npcDied: !currentNPC.isGood);
+        Debug.Log("Let in clicked");
     }
 
     public void OnClickTurnAway()
     {
-        dialoguePanel.SetActive(false);
-        currentNpc.IncrementVisitCount();
+        EndDialogue();
+        currentNPC.IncrementVisitCount();
+        if (spawner != null) spawner.OnVisitorFinished(npcDied: false);
+        Debug.Log("turn away clicked");
+    }
 
-        spawner.OnVisitorFinished(npcDied: false);
+    public void SetCursorState(bool isDialogueActive)
+    {
+        if (isDialogueActive)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }

@@ -17,8 +17,40 @@ MonoBehaviour:
   doorbellSound: {fileID: 8300000, guid: de775138f0f360f4f9b791674017344c, type: 3}
   isGuaranteedGood: 0
   goodChancePercentage: 50
-  visitDialoguesGood: []
-  visitDialoguesBad: []
+  visitDialoguesGood:
+  - npcStatement: Hello perhaps you would be inclined to let me into your house I
+      might make it worth your while ^o^
+    choices:
+    - choiceText: tell me more
+      nextNode:
+        npcStatement: I will not reveal my cards just yet human
+        choices: []
+        endOfConversation: 1
+      triggersAlignmentCheck: 0
+    - choiceText: no go away
+      nextNode:
+        npcStatement: you will regret not letting the great I into your house
+        choices: []
+        endOfConversation: 1
+      triggersAlignmentCheck: 0
+    endOfConversation: 0
+  visitDialoguesBad:
+  - npcStatement: good evening human would you be inclined to let me into your territory?
+      I will make it worth it for thy
+    choices:
+    - choiceText: tell me more
+      nextNode:
+        npcStatement: that is all teh information I can give you today
+        choices: []
+        endOfConversation: 1
+      triggersAlignmentCheck: 0
+    - choiceText: no way jose go away
+      nextNode:
+        npcStatement: suit yourself stupid human
+        choices: []
+        endOfConversation: 1
+      triggersAlignmentCheck: 0
+    endOfConversation: 0
   hasBeenEvaluated: 1
-  isGood: 0
+  isGood: 1
   visitCount: 0
