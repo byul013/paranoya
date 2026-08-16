@@ -15,6 +15,8 @@ MonoBehaviour:
   npcName: Nerd
   npcSprite: {fileID: 21300000, guid: 90cd2cc132f435344bc6dd0af955376c, type: 3}
   doorbellSound: {fileID: 8300000, guid: de775138f0f360f4f9b791674017344c, type: 3}
+  npcPrefab: {fileID: 0}
+  allowedRooms: 0000000001000000
   isGuaranteedGood: 0
   goodChancePercentage: 50
   visitDialoguesGood:
@@ -23,15 +25,11 @@ MonoBehaviour:
     choices:
     - choiceText: tell me more
       nextNode:
-        npcStatement: I will not reveal my cards just yet human
-        choices: []
-        endOfConversation: 1
+        rid: -2
       triggersAlignmentCheck: 0
     - choiceText: no go away
       nextNode:
-        npcStatement: you will regret not letting the great I into your house
-        choices: []
-        endOfConversation: 1
+        rid: -2
       triggersAlignmentCheck: 0
     endOfConversation: 0
   visitDialoguesBad:
@@ -40,17 +38,18 @@ MonoBehaviour:
     choices:
     - choiceText: tell me more
       nextNode:
-        npcStatement: that is all teh information I can give you today
-        choices: []
-        endOfConversation: 1
+        rid: -2
       triggersAlignmentCheck: 0
     - choiceText: no way jose go away
       nextNode:
-        npcStatement: suit yourself stupid human
-        choices: []
-        endOfConversation: 1
+        rid: -2
       triggersAlignmentCheck: 0
     endOfConversation: 0
   hasBeenEvaluated: 1
   isGood: 1
   visitCount: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

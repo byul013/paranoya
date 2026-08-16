@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueChoice
 {
     public string choiceText;
-    public DialogueNode nextNode;
+    [SerializeReference] public DialogueNode nextNode;
     public bool triggersAlignmentCheck;
 }
 
@@ -25,6 +25,10 @@ public class NPCData : ScriptableObject
     public string npcName;
     public Sprite npcSprite;
     public AudioClip doorbellSound;
+    public GameObject npcPrefab;
+
+    [Header("House Spawn Settings")]
+    public List<HouseRoom> allowedRooms = new List<HouseRoom>();
 
     [Header("Alignment Settings")]
     public bool isGuaranteedGood = false;
