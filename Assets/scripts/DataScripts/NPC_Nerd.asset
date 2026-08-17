@@ -46,7 +46,7 @@ MonoBehaviour:
       triggersAlignmentCheck: 0
     endOfConversation: 0
   hasBeenEvaluated: 1
-  isGood: 1
+  isGood: 0
   visitCount: 0
   references:
     version: 2

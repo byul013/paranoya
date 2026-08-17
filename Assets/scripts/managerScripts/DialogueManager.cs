@@ -10,6 +10,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI npcDialogueText;
     [SerializeField] private Transform choicesContainer;
     [SerializeField] private GameObject choiceButtonPrefab;
+    [SerializeField] private InsideSpawner insideSpawner;
 
     [Header("End Decision Buttons")]
     [SerializeField] private GameObject actionButtonsPanel;
@@ -114,7 +115,15 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[DialogueManager] Choice selected but nextNode is null!");
+            if (actionButtonsPanel != null)
+            {
+                actionButtonsPanel.SetActive(true);
+            }
+
+            foreach (Transform child in choicesContainer)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 
@@ -143,7 +152,14 @@ public class DialogueManager : MonoBehaviour
     {
         EndDialogue();
         currentNPC.IncrementVisitCount();
-        if (spawner != null) spawner.OnVisitorFinished(npcDied: !currentNPC.isGood);
+        if (insideSpawner != null && currentNPC != null)
+        {
+            insideSpawner.SpawnNPCInside(currentNPC);
+        }
+        if (spawner != null)
+        {
+            spawner.OnVisitorFinished(npcDied: !currentNPC.isGood);
+        }
         Debug.Log("Let in clicked");
     }
 
