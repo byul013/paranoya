@@ -16,7 +16,7 @@ public class NPCSpawn : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     [Header("Day & Visitor Settings")]
-    [SerializeField] private int currentDay = 1;
+    [SerializeField] private int currentDay = 0;
     [SerializeField] private int maxVisitorsPerDay = 3;
     [SerializeField] private float timeBetweenVisitors = 10f;
 
@@ -54,7 +54,7 @@ public class NPCSpawn : MonoBehaviour
 
     public void StartNewDay()
     {
-        currentDay++;
+        currentDay = currentDay + 1;
         visitorsToday = 0;
         currentlyAtDoor = false;
         timer = timeBetweenVisitors;
