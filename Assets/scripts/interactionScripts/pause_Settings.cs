@@ -44,4 +44,6 @@ public class pause_Settings : MonoBehaviour
         Debug.Log("Quit Game");
         Application.Quit();
     }
+
+      
 }
