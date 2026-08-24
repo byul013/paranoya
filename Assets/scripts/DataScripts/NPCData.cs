@@ -5,7 +5,8 @@ using UnityEngine;
 public class DialogueChoice
 {
     public string choiceText;
-    [SerializeReference] public DialogueNode nextNode;
+    [Tooltip("The follow-up node containing the NPC's response to this choice.")]
+    public DialogueNode nextNode;
     public bool triggersAlignmentCheck;
 }
 
@@ -14,8 +15,11 @@ public class DialogueNode
 {
     [TextArea(2, 4)]
     public string npcStatement;
-    public List<DialogueChoice> choices;
+
+    [Tooltip("If unchecked, choice options will be shown. If checked, Action Buttons (Let In / Turn Away) appear.")]
     public bool endOfConversation;
+
+    public List<DialogueChoice> choices = new List<DialogueChoice>();
 }
 
 [CreateAssetMenu(fileName = "NewNPCData", menuName = "Door System/NPC Data")]
@@ -44,7 +48,7 @@ public class NPCData : ScriptableObject
     [Header("Runtime State")]
     [HideInInspector] public bool hasBeenEvaluated = false;
     [HideInInspector] public bool isGood = false;
-    [HideInInspector] public int visitCount = 0; 
+    [HideInInspector] public int visitCount = 0;
 
     public void EvaluateAlignment()
     {
@@ -63,13 +67,11 @@ public class NPCData : ScriptableObject
         hasBeenEvaluated = true;
     }
 
-
     public DialogueNode GetStartingDialogueNode()
     {
         List<DialogueNode> targetList = isGood ? visitDialoguesGood : visitDialoguesBad;
 
         if (targetList == null || targetList.Count == 0) return null;
-
 
         int index = Mathf.Min(visitCount, targetList.Count - 1);
         return targetList[index];

@@ -15,41 +15,45 @@ MonoBehaviour:
   npcName: Nerd
   npcSprite: {fileID: 21300000, guid: 90cd2cc132f435344bc6dd0af955376c, type: 3}
   doorbellSound: {fileID: 8300000, guid: de775138f0f360f4f9b791674017344c, type: 3}
-  npcPrefab: {fileID: 0}
+  npcPrefab: {fileID: 4832971221142199699, guid: 9cae94a2b82d67442a442b79f2cef229, type: 3}
   allowedRooms: 0000000001000000
   isGuaranteedGood: 0
   goodChancePercentage: 50
   visitDialoguesGood:
   - npcStatement: Hello perhaps you would be inclined to let me into your house I
       might make it worth your while ^o^
+    endOfConversation: 0
     choices:
     - choiceText: tell me more
       nextNode:
-        rid: -2
+        npcStatement: 'I cannot tell you everything just yet youll have to trust
+          me '
+        endOfConversation: 0
+        choices: []
       triggersAlignmentCheck: 0
     - choiceText: no go away
       nextNode:
-        rid: -2
+        npcStatement: suit yourself
+        endOfConversation: 1
+        choices: []
       triggersAlignmentCheck: 0
-    endOfConversation: 0
   visitDialoguesBad:
   - npcStatement: good evening human would you be inclined to let me into your territory?
       I will make it worth it for thy
+    endOfConversation: 0
     choices:
     - choiceText: tell me more
       nextNode:
-        rid: -2
+        npcStatement: 
+        endOfConversation: 0
+        choices: []
       triggersAlignmentCheck: 0
     - choiceText: no way jose go away
       nextNode:
-        rid: -2
+        npcStatement: 
+        endOfConversation: 0
+        choices: []
       triggersAlignmentCheck: 0
-    endOfConversation: 0
   hasBeenEvaluated: 1
-  isGood: 0
-  visitCount: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+  isGood: 1
+  visitCount: 1
