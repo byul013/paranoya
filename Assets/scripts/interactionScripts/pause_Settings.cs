@@ -1,84 +1,117 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class pause_Settings : MonoBehaviour
+public class Pause_Settings : MonoBehaviour
 {
     [Header("UI references")]
-    [SerializeField] private GameObject PausePanel;
-    [SerializeField] private GameObject SettingsPanel;
+    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject settingsPanel;
     [SerializeField] private GameObject gameSettingsPanel;
     [SerializeField] private GameObject audioSettingsPanel;
     [SerializeField] private GameObject displaySettingsPanel;
+
+    [Header("Buttons")]
     [SerializeField] private Button resumeButton;
-    [SerializeField] private Button QuitButton;
-    [SerializeField] private Button SettingsButton;
-    [SerializeField] private Button GameSettingsButton;
-    [SerializeField] private Button AudioSettingsButton;
-    [SerializeField] private Button DisplaySettingsButton;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button gameSettingsButton;
+    [SerializeField] private Button audioSettingsButton;
+    [SerializeField] private Button displaySettingsButton;
 
+    private bool isPaused = false;
 
-
-    private float PausedOn = 0f;
-    private float PausedOff = 1f;
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape))
         {
-            Time.timeScale = PausedOn;
-            PausePanel.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            Debug.Log("Entered Paused Screen");
+            if (isPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
         }
     }
 
     private void OnEnable()
     {
         resumeButton.onClick.AddListener(ResumeGame);
-        QuitButton.onClick.AddListener(QuitGame);
-        SettingsButton.onClick.AddListener(GameSettings);
-        GameSettingsButton.onClick.AddListener(GSPanel);
-        AudioSettingsButton.onClick.AddListener(AudioSettingsPanel);
-        DisplaySettingsButton.onClick.AddListener(DisplaySettingsPanel);
+        quitButton.onClick.AddListener(QuitGame);
+        settingsButton.onClick.AddListener(OpenMainSettings);
+        gameSettingsButton.onClick.AddListener(ShowGameSettingsTab);
+        audioSettingsButton.onClick.AddListener(ShowAudioSettingsTab);
+        displaySettingsButton.onClick.AddListener(ShowDisplaySettingsTab);
+    }
+
+    private void OnDisable()
+    {
+        resumeButton.onClick.RemoveListener(ResumeGame);
+        quitButton.onClick.RemoveListener(QuitGame);
+        settingsButton.onClick.RemoveListener(OpenMainSettings);
+        gameSettingsButton.onClick.RemoveListener(ShowGameSettingsTab);
+        audioSettingsButton.onClick.RemoveListener(ShowAudioSettingsTab);
+        displaySettingsButton.onClick.RemoveListener(ShowDisplaySettingsTab);
+    }
+
+    private void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0f;
+
+        pausePanel.SetActive(true);
+        settingsPanel.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Debug.Log("Game Paused");
     }
 
     private void ResumeGame()
     {
-        PausePanel.SetActive(false);
-        Time.timeScale = PausedOff;
+        isPaused = false;
+        Time.timeScale = 1f;
+
+        pausePanel.SetActive(false);
+        settingsPanel.SetActive(false);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Debug.Log("Game Resumed");
+    }
+
+    private void OpenMainSettings()
+    {
+        pausePanel.SetActive(false);
+        settingsPanel.SetActive(true);
+        ShowGameSettingsTab();
+    }
+
+    private void ShowGameSettingsTab()
+    {
+        gameSettingsPanel.SetActive(true);
+        audioSettingsPanel.SetActive(false);
+        displaySettingsPanel.SetActive(false);
+    }
+
+    private void ShowAudioSettingsTab()
+    {
+        gameSettingsPanel.SetActive(false);
+        audioSettingsPanel.SetActive(true);
+        displaySettingsPanel.SetActive(false);
+    }
+
+    private void ShowDisplaySettingsTab()
+    {
+        gameSettingsPanel.SetActive(false);
+        audioSettingsPanel.SetActive(false);
+        displaySettingsPanel.SetActive(true);
     }
 
     private void QuitGame()
     {
         Debug.Log("Quit Game");
         Application.Quit();
-    }
-    
-    private void GameSettings()
-    {
-        PausePanel.SetActive(false);
-        SettingsPanel.SetActive(true);
-        audioSettingsPanel.SetActive(false);
-        displaySettingsPanel.SetActive(false);
-    }
-
-    private void GSPanel()
-    {
-
-    }
-
-    private void AudioSettingsPanel()
-    {
-
-    }
-
-    private void DisplaySettingsPanel()
-    {
-
     }
 }
