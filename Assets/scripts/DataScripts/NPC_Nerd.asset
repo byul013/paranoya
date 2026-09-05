@@ -18,6 +18,9 @@ MonoBehaviour:
   npcPrefab: {fileID: 4832971221142199699, guid: 9cae94a2b82d67442a442b79f2cef229, type: 3}
   HeldFood: 3
   HeldWater: 3
+  heldScraps: 2
+  Hunger: 1
+  Thirst: 1
   allowedRooms: 0000000001000000
   isGuaranteedGood: 0
   goodChancePercentage: 50
@@ -57,5 +60,5 @@ MonoBehaviour:
         choices: []
       triggersAlignmentCheck: 0
   hasBeenEvaluated: 1
-  isGood: 1
+  isGood: 0
   visitCount: 1

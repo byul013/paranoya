@@ -30,6 +30,11 @@ public class InsideSpawner : MonoBehaviour
         {
             InsideSpawnPoint chosenPoint = validPoints[Random.Range(0, validPoints.Count)];
             GameObject spawnedNPC = Instantiate(npc.npcPrefab, chosenPoint.transform.position, chosenPoint.transform.rotation);
+            NPCIdentity identity = spawnedNPC.GetComponent;
+            if (identity != null)
+            {
+                identity.npcData = npc;
+            }
             chosenPoint.isOccupied = true;
             activeInsideNPCs.Add(spawnedNPC);
             Debug.Log($"[InsideNPCSpawner] Spawned {npc.npcName} in room: {chosenPoint.roomLocation}");

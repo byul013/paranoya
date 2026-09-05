@@ -20,6 +20,22 @@ public class DialogueNode
     public List<DialogueChoice> choices = new List<DialogueChoice>();
 }
 
+[System.Serializable]
+public class IndoorDialogueNode
+{
+    [TextArea(2, 4)]
+    public string indoorNpcLine;
+    public bool endConvo;
+    public List<DialogueChoiceIndoor> choices = new List <DialogueChoiceIndoor>();
+}
+
+[System.Serializable]
+public class IndoorChoice
+{
+    public string IndoorChoiceText;;
+    public DialogueNode nextNOdeId;
+}
+
 [CreateAssetMenu(fileName = "NewNPCData", menuName = "Door System/NPC Data")]
 public class NPCData : ScriptableObject
 {

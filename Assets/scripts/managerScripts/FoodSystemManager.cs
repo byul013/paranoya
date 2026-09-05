@@ -26,7 +26,7 @@ public class FoodSystemManager : MonoBehaviour
         food += npc.HeldFood;
     }
 
-    public void AddWater(NPCData npc)
+    public void AddWater(NPCData npc)   
     {
         if (npc == null)
         {
