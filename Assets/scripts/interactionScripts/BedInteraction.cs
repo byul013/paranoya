@@ -4,12 +4,13 @@ public class BedInteraction : MonoBehaviour
 {
     [SerializeField] private NPCSpawn spawner;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] private HungerScript hungerScript;
 
     private bool playerInRange = false;
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey))
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             TrySleep();
         }
@@ -22,6 +23,7 @@ public class BedInteraction : MonoBehaviour
             Debug.Log("Sleeping... Passing time to the next day!");
 
             spawner.StartNewDay();
+            hungerScript.LooseHunger();
         }
         else
         {

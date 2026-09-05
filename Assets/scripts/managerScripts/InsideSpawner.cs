@@ -13,7 +13,6 @@ public class InsideSpawner : MonoBehaviour
     {
         if (npc == null || npc.npcPrefab == null)
         {
-            Debug.Log("references missing can not spawn");
             return;
         }
 

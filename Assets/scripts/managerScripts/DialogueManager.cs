@@ -21,21 +21,21 @@ public class DialogueManager : MonoBehaviour
 
     private NPCSpawn spawner;
     private NPCData currentNPC;
+    [SerializeField] private FoodSystemManager foodSystem;
     private DialogueNode currentNode;
     private Coroutine typingCoroutine;
     private bool isTyping = false;
-    private bool isStartingDialogue = false; // Prevents same-frame interaction trigger
+    private bool isStartingDialogue = false;
+
 
     private void Update()
     {
         if (dialoguePanel != null && dialoguePanel.activeSelf)
         {
-            // Ignore input on the frame dialogue opens
             if (isStartingDialogue) return;
 
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.E))
             {
-                // If text is still typing, skip animation and display immediately
                 if (isTyping)
                 {
                     StopCoroutine(typingCoroutine);
@@ -45,7 +45,6 @@ public class DialogueManager : MonoBehaviour
                     return;
                 }
 
-                // If no choices remain or text reached end without choices, advance
                 if (currentNode != null && (currentNode.choices == null || currentNode.choices.Count == 0))
                 {
                     AdvanceIfPossible();
@@ -80,7 +79,7 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator IgnoreInitialInputFrame()
     {
         isStartingDialogue = true;
-        yield return null; // Wait 1 frame until the interaction key press resets
+        yield return null;
         isStartingDialogue = false;
     }
 
@@ -88,13 +87,11 @@ public class DialogueManager : MonoBehaviour
     {
         currentNode = node;
 
-        // Clear existing choice UI
         ClearChoices();
 
         if (actionButtonsPanel != null)
             actionButtonsPanel.SetActive(false);
 
-        // Run animated text display
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
         typingCoroutine = StartCoroutine(TypeText(node.npcStatement));
     }
@@ -118,14 +115,12 @@ public class DialogueManager : MonoBehaviour
     {
         ClearChoices();
 
-        // If end of conversation node, activate decision options
         if (node.endOfConversation)
         {
             if (actionButtonsPanel != null) actionButtonsPanel.SetActive(true);
             return;
         }
 
-        // Display standard choice branch buttons
         if (node.choices != null && node.choices.Count > 0)
         {
             foreach (DialogueChoice choice in node.choices)
@@ -153,7 +148,6 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            // Reached leaf node without assigned next node: present decisions
             ClearChoices();
             if (actionButtonsPanel != null)
             {
@@ -166,7 +160,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentNode == null || currentNode.endOfConversation) return;
 
-        // Automatically present action buttons if dialogue has completed sequence
         if (currentNode.choices == null || currentNode.choices.Count == 0)
         {
             if (actionButtonsPanel != null)
@@ -199,6 +192,8 @@ public class DialogueManager : MonoBehaviour
         if (insideSpawner != null && currentNPC != null)
         {
             insideSpawner.SpawnNPCInside(currentNPC);
+            foodSystem.AddFood(currentNPC);
+            foodSystem.AddWater(currentNPC);
         }
         if (spawner != null)
         {

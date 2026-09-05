@@ -5,7 +5,6 @@ using UnityEngine;
 public class DialogueChoice
 {
     public string choiceText;
-    [Tooltip("The follow-up node containing the NPC's response to this choice.")]
     public DialogueNode nextNode;
     public bool triggersAlignmentCheck;
 }
@@ -16,7 +15,6 @@ public class DialogueNode
     [TextArea(2, 4)]
     public string npcStatement;
 
-    [Tooltip("If unchecked, choice options will be shown. If checked, Action Buttons (Let In / Turn Away) appear.")]
     public bool endOfConversation;
 
     public List<DialogueChoice> choices = new List<DialogueChoice>();
@@ -31,6 +29,15 @@ public class NPCData : ScriptableObject
     public AudioClip doorbellSound;
     public GameObject npcPrefab;
 
+    [Header("Items")]
+    public int HeldFood;
+    public int HeldWater;
+    public int heldScraps;
+
+    [Header("Hunger/Thirst")]
+    public int Hunger;
+    public int Thirst;
+
     [Header("House Spawn Settings")]
     public List<HouseRoom> allowedRooms = new List<HouseRoom>();
 
@@ -39,10 +46,8 @@ public class NPCData : ScriptableObject
     [Range(0, 100)] public int goodChancePercentage = 50;
 
     [Header("Dialogue Trees Per Visit")]
-    [Tooltip("Index 0 = Visit 1 Good Dialogue, Index 1 = Visit 2 Good Dialogue, etc.")]
     public List<DialogueNode> visitDialoguesGood = new List<DialogueNode>();
 
-    [Tooltip("Index 0 = Visit 1 Bad Dialogue, Index 1 = Visit 2 Bad Dialogue, etc.")]
     public List<DialogueNode> visitDialoguesBad = new List<DialogueNode>();
 
     [Header("Runtime State")]
