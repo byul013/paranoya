@@ -32,7 +32,7 @@ public class IndoorDialogueNode
 [System.Serializable]
 public class IndoorChoice
 {
-    public string IndoorChoiceText;;
+    public string IndoorChoiceText;
     public DialogueNode nextNOdeId;
 }
 
