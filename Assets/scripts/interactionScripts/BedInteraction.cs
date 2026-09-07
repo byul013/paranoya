@@ -23,7 +23,7 @@ public class BedInteraction : MonoBehaviour
             Debug.Log("Sleeping... Passing time to the next day!");
 
             spawner.StartNewDay();
-            hungerScript.LooseHunger();
+            hungerScript.LoseHunger();
         }
         else
         {

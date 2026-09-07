@@ -5,9 +5,9 @@ using UnityEngine;
 public class InsideSpawner : MonoBehaviour
 {
     [Header("House Spawn Points")]
-    [SerializeField] private List<InsideSpawnPoint> houseSpawnPoints = new List<InsideSpawnPoint> ();
+    [SerializeField] private List<InsideSpawnPoint> houseSpawnPoints = new List<InsideSpawnPoint>();
 
-    private List<GameObject> activeInsideNPCs = new List<GameObject> ();
+    public List<GameObject> activeInsideNPCs = new List<GameObject>();
 
     public void SpawnNPCInside(NPCData npc)
     {
@@ -16,7 +16,7 @@ public class InsideSpawner : MonoBehaviour
             return;
         }
 
-        List<InsideSpawnPoint> validPoints = new List<InsideSpawnPoint> ();
+        List<InsideSpawnPoint> validPoints = new List<InsideSpawnPoint>();
 
         foreach (InsideSpawnPoint point in houseSpawnPoints)
         {
@@ -30,11 +30,12 @@ public class InsideSpawner : MonoBehaviour
         {
             InsideSpawnPoint chosenPoint = validPoints[Random.Range(0, validPoints.Count)];
             GameObject spawnedNPC = Instantiate(npc.npcPrefab, chosenPoint.transform.position, chosenPoint.transform.rotation);
-            NPCIdentity identity = spawnedNPC.GetComponent;
+            NPCIdentity identity = spawnedNPC.GetComponent<NPCIdentity>();
             if (identity != null)
             {
                 identity.npcData = npc;
             }
+
             chosenPoint.isOccupied = true;
             activeInsideNPCs.Add(spawnedNPC);
             Debug.Log($"[InsideNPCSpawner] Spawned {npc.npcName} in room: {chosenPoint.roomLocation}");

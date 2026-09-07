@@ -25,14 +25,16 @@ public class IndoorDialogueNode
 {
     [TextArea(2, 4)]
     public string indoorNpcLine;
+
     public bool endConvo;
-    public List<DialogueChoiceIndoor> choices = new List <DialogueChoiceIndoor>();
+
+    public List<IndoorChoice> choices = new List <IndoorChoice>();
 }
 
 [System.Serializable]
 public class IndoorChoice
 {
-    public string IndoorChoiceText;;
+    public string IndoorChoiceText;
     public DialogueNode nextNOdeId;
 }
 

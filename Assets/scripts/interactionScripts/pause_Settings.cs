@@ -10,13 +10,18 @@ public class Pause_Settings : MonoBehaviour
     [SerializeField] private GameObject audioSettingsPanel;
     [SerializeField] private GameObject displaySettingsPanel;
 
-    [Header("Buttons")]
+    [Header("UI header Buttons")]
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button gameSettingsButton;
     [SerializeField] private Button audioSettingsButton;
     [SerializeField] private Button displaySettingsButton;
+
+    [Header("Settings UI")]
+    [SerializeField] private Button fullScreenButton;
+    [SerializeField] private Button WindowedScreenButton;
+    [SerializeField] private Button borderlessButton;
 
     private bool isPaused = false;
 
@@ -43,6 +48,9 @@ public class Pause_Settings : MonoBehaviour
         gameSettingsButton.onClick.AddListener(ShowGameSettingsTab);
         audioSettingsButton.onClick.AddListener(ShowAudioSettingsTab);
         displaySettingsButton.onClick.AddListener(ShowDisplaySettingsTab);
+        fullScreenButton.onClick.AddListener(GameFullScreen);
+        WindowedScreenButton.AddListener(GameWindowed);
+        borderlessButton.AddListener(GameBorderless);
     }
 
     private void OnDisable()
@@ -53,6 +61,9 @@ public class Pause_Settings : MonoBehaviour
         gameSettingsButton.onClick.RemoveListener(ShowGameSettingsTab);
         audioSettingsButton.onClick.RemoveListener(ShowAudioSettingsTab);
         displaySettingsButton.onClick.RemoveListener(ShowDisplaySettingsTab);
+        fullScreenButton.onClick.RemoveListener(GameFullScreen);
+        WindowedScreenButton.RemoveListener(GameWindowed);
+        borderlessButton.RemoveListener(GameBorderless);
     }
 
     private void PauseGame()
@@ -113,5 +124,23 @@ public class Pause_Settings : MonoBehaviour
     {
         Debug.Log("Quit Game");
         Application.Quit();
+    }
+
+    private void GameFullScreen()
+    {
+        Screen.FullScreen = true;
+        Debug.Log("Screen res set to full screen");
+    }
+
+    // might have to use pixels(save for later)
+    private void GameWindowed()
+    {
+
+    }
+
+    // might have to use pixels(save for later)
+    private void GameBorderless()
+    {
+
     }
 }

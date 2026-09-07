@@ -9,7 +9,7 @@ public class IndoorsInteraction : MonoBehaviour
     [SerializeField] private NPCData npcData;
 
     [Header("UI References")]
-    [SerializeField] private GameObject dialoguePanel;
+    [SerializeField] private GameObject IndoorDialoguePanel;
     [SerializeField] private TextMeshProUGUI npcNameText;
     [SerializeField] private TextMeshProUGUI npcDialogueText;
     [SerializeField] private Transform choicesContainer;
@@ -24,18 +24,19 @@ public class IndoorsInteraction : MonoBehaviour
     private NPCData currentNPC;
     private DialogueNode currentNode;
     private Coroutine typingCoroutine;
-    private NPCIdentity identity; // Caching target component safely here
+    private NPCIdentity identity;
 
     private void OnTriggerEnter(Collider other)
     {
-        // Adjust tag check to fit your interior NPC layers
         if (other.CompareTag("NPC"))
         {
             isInRange = true;
-            identity = other.GetComponent();
-            
-            // Proactively trigger the interaction if you don't use a separate interact key to open it
-            if (identity != null && npcData != null)
+            identity = other.GetComponent<NPCIdentity>();
+            if (identity != null && identity.npcData != null)
+            {
+                StartInteraction(identity.npcData);
+            }
+            else if (npcData != null)
             {
                 StartInteraction(npcData);
             }
@@ -53,7 +54,7 @@ public class IndoorsInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (dialoguePanel != null && dialoguePanel.activeSelf)
+        if (IndoorDialoguePanel != null && IndoorDialoguePanel.activeSelf)
         {
             if (isStartingDialogue) return;
 
@@ -79,12 +80,11 @@ public class IndoorsInteraction : MonoBehaviour
     public void StartInteraction(NPCData npc)
     {
         currentNPC = npc;
-        if (dialoguePanel != null) dialoguePanel.SetActive(true);
+        if (IndoorDialoguePanel != null) IndoorDialoguePanel.SetActive(true);
         if (npcNameText != null) npcNameText.text = currentNPC.npcName;
 
         SetCursorState(true);
 
-        // Uses the centralized starting logic from your structural dataset
         currentNode = currentNPC.GetStartingDialogueNode();
         
         if (currentNode != null)
@@ -105,7 +105,6 @@ public class IndoorsInteraction : MonoBehaviour
         isStartingDialogue = false;
     }
 
-    // Finished implementation matching DialogueManager behavior
     public void DisplayNodeIndoor(DialogueNode node)
     {
         currentNode = node;
@@ -138,16 +137,18 @@ public class IndoorsInteraction : MonoBehaviour
         {
             foreach (DialogueChoice choice in node.choices)
             {
+                DialogueChoice capturedChoice = choice;
                 GameObject btnObj = Instantiate(choiceButtonPrefab, choicesContainer);
                 btnObj.SetActive(true);
 
                 TextMeshProUGUI btnText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
-                if (btnText != null) btnText.text = choice.choiceText;
+                if (btnText != null) btnText.text = capturedChoice.choiceText;
 
                 Button btnComponent = btnObj.GetComponent<Button>();
                 if (btnComponent != null)
                 {
-                    btnComponent.onClick.AddListener(() => OnChoiceSelected(choice));
+                    btnComponent.onClick.RemoveAllListeners();
+                    btnComponent.onClick.AddListener(() => OnChoiceSelected(capturedChoice));
                 }
             }
         }
@@ -183,7 +184,7 @@ public class IndoorsInteraction : MonoBehaviour
 
     public void EndDialogue()
     {
-        if (dialoguePanel != null) dialoguePanel.SetActive(false);
+        if (IndoorDialoguePanel != null) IndoorDialoguePanel.SetActive(false);
         SetCursorState(false);
     }
 
