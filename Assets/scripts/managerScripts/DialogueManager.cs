@@ -22,6 +22,7 @@ public class DialogueManager : MonoBehaviour
     private NPCSpawn spawner;
     private NPCData currentNPC;
     [SerializeField] private FoodSystemManager foodSystem;
+    [SerializeField] private scrapManager scraps;
     private DialogueNode currentNode;
     private Coroutine typingCoroutine;
     private bool isTyping = false;
@@ -76,6 +77,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    // ignore first input so the program doesn't recive interaction key input as skip dialogue
     private IEnumerator IgnoreInitialInputFrame()
     {
         isStartingDialogue = true;
@@ -194,6 +196,7 @@ public class DialogueManager : MonoBehaviour
             insideSpawner.SpawnNPCInside(currentNPC);
             foodSystem.AddFood(currentNPC);
             foodSystem.AddWater(currentNPC);
+            scraps.GainScraps(currentNPC);// gives player the NPCs held scraps
         }
         if (spawner != null)
         {

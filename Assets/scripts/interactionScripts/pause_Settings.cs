@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 
 public class Pause_Settings : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class Pause_Settings : MonoBehaviour
     [SerializeField] private GameObject gameSettingsPanel;
     [SerializeField] private GameObject audioSettingsPanel;
     [SerializeField] private GameObject displaySettingsPanel;
+    [SerializeField] private TMP_Dropdown screenResDrop;
 
     [Header("UI header Buttons")]
     [SerializeField] private Button resumeButton;
@@ -23,7 +26,27 @@ public class Pause_Settings : MonoBehaviour
     [SerializeField] private Button WindowedScreenButton;
     [SerializeField] private Button borderlessButton;
 
+    // bool for screen mode
+    private bool isExclusiveFS = false;
+    private bool isWindowFS = false;
+    private bool isWindowed = false;
+
     private bool isPaused = false;
+
+
+    private void Start ()
+    {
+        screenResDrop.clearOptions();
+        List<int> ScreehResOptions = new List<int>
+        {
+            1,
+            2,
+            3,
+        };
+
+        screenResDrop.AddOptions(ScreehResOptions);
+        screenResDrop.onValueChanged.AddListener(OnResDropChanged);
+    }
 
     private void Update()
     {
@@ -128,19 +151,69 @@ public class Pause_Settings : MonoBehaviour
 
     private void GameFullScreen()
     {
-        Screen.FullScreen = true;
-        Debug.Log("Screen res set to full screen");
+        //Screen.Resolution(1920, 1080, FullScreenMode.ExclusivefullScreen);
+        isWindowFS = false;
+        isWindowed = false;
+        isExclusiveFS = true;
+        Debug.Log("Screen res set to exclusive full screen the game takes full control of the screen");
     }
 
-    // might have to use pixels(save for later)
     private void GameWindowed()
     {
-
+        //screen.Resolution(1920, 1080, FullScreenmode.FullScreenWindow);
+        isExclusiveFS = false;
+        isWindowed = false;
+        isWindowFS = true;
+        Debug.Log("Game set to full screen window display will match the monitors refresh rate");
     }
 
-    // might have to use pixels(save for later)
     private void GameBorderless()
     {
-
+        //screen.Resolution(1280, 720, FullScreenMode.Windowed);
+        isExclusiveFS = false;
+        isWindowFS = false;
+        isWindowed = true;
+        Debug.Log("screen set to windowed and resolution is set to 720p");
     }
+    /*
+    private void OnResDropChanged(int index)
+    {
+        if(index == 0 && isExclusiveFS == true)
+        {
+            screen.Resolition(1920, 1080, FullScreenMode.ExclusivefullScreen);
+        }
+        else  if (index == 1 && isExclusiveFS == true)
+        {
+            screen.Resolution(1280, 720, FullScreenMode.ExclusivefullScreen);
+        }
+        else  if (index == 2 && isExclusiveFS == true)
+        {
+            screen.Resolution(640, 480, FullScreenMode.ExclusivefullScreen);
+        }
+        else  if (index == 0 && isWindowFS == true)
+        {
+            screen.Resolition(1920, 1080, FullScreenMode.FullScreenWindow);
+        }
+        else if (index == 1 && isWindowFS == true)
+        {
+            screen.Resolition(1280, 720, FullScreenMode.FullScreenWindow);
+        }
+        else if (index == 2 && isWindowFS == true)
+        {
+            screen.Resolition(640, 480, FullScreenMode.FullScreenWindow);
+        }
+        else if (Index == 0 && isExclusiveFS == true)
+        {
+            screen.Resolition(1920, 1080, FullScreenMode.Windowed);
+        }
+        else if (index == 1 && isWindowFS == ture)
+        {
+            screen.Resolition(1280, 720, FullScreenMode.Windowed);
+        }
+        else if (index == 2 && isWindowed == true)
+        {
+            screen.Resolition(640, 480, FullScreenMode.Windowed);
+        }
+    }
+    */
 }

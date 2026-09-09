@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+
 public class IndoorsInteraction : MonoBehaviour
 {
     [SerializeField] private NPCData npcData;
@@ -12,7 +13,7 @@ public class IndoorsInteraction : MonoBehaviour
     [SerializeField] private GameObject IndoorDialoguePanel;
     [SerializeField] private TextMeshProUGUI npcNameText;
     [SerializeField] private TextMeshProUGUI npcDialogueText;
-    [SerializeField] private Transform choicesContainer;
+    [SerializeField] private Transform choicesContainer; // empty transform for choice tab
     [SerializeField] private GameObject choiceButtonPrefab;
 
     [Header("Text Settings")]

@@ -21,17 +21,13 @@ public class HungerScript : MonoBehaviour
         int totalHungerDemand = 0;
         int totalThirstDemand = 0;
 
-        // Fixed: Enclosed full calculation inside the loop body
         foreach (GameObject npcObj in insideSpawnNPC.activeInsideNPCs)
         {
             if (npcObj == null) continue;
 
-            // Fixed: Added <NPCIdentity>() type argument
             NPCIdentity identity = npcObj.GetComponent<NPCIdentity>();
             if (identity != null && identity.npcData != null)
             {
-                // Note: Using HeldFood/HeldWater as defined in NPCData. 
-                // Change these if you added separate hunger/thirst variables to NPCData!
                 totalHungerDemand += identity.npcData.HeldFood;
                 totalThirstDemand += identity.npcData.HeldWater;
             }
