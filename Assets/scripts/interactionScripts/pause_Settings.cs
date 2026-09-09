@@ -1,7 +1,8 @@
+using System.Collections;
+using System.Collections.Generic; // FIXED: Added this namespace so Unity recognizes Lists
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
 
 public class Pause_Settings : MonoBehaviour
 {
@@ -36,15 +37,13 @@ public class Pause_Settings : MonoBehaviour
 
     private void Start ()
     {
-        screenResDrop.clearOptions();
-        List<int> ScreehResOptions = new List<int>
-        {
-            1,
-            2,
-            3,
-        };
+        // FIXED: Capitalized ClearOptions
+        screenResDrop.ClearOptions();
+        
+        // Convert to string list because TMP_Dropdown prefers strings or OptionData
+        List<string> ScreenResOptions = new List<string> { "1", "2", "3" };
 
-        screenResDrop.AddOptions(ScreehResOptions);
+        screenResDrop.AddOptions(ScreenResOptions);
         screenResDrop.onValueChanged.AddListener(OnResDropChanged);
     }
 
@@ -72,8 +71,10 @@ public class Pause_Settings : MonoBehaviour
         audioSettingsButton.onClick.AddListener(ShowAudioSettingsTab);
         displaySettingsButton.onClick.AddListener(ShowDisplaySettingsTab);
         fullScreenButton.onClick.AddListener(GameFullScreen);
-        WindowedScreenButton.AddListener(GameWindowed);
-        borderlessButton.AddListener(GameBorderless);
+        
+        // FIXED: Added .onClick here
+        WindowedScreenButton.onClick.AddListener(GameWindowed);
+        borderlessButton.onClick.AddListener(GameBorderless);
     }
 
     private void OnDisable()
@@ -85,8 +86,10 @@ public class Pause_Settings : MonoBehaviour
         audioSettingsButton.onClick.RemoveListener(ShowAudioSettingsTab);
         displaySettingsButton.onClick.RemoveListener(ShowDisplaySettingsTab);
         fullScreenButton.onClick.RemoveListener(GameFullScreen);
-        WindowedScreenButton.RemoveListener(GameWindowed);
-        borderlessButton.RemoveListener(GameBorderless);
+        
+        // FIXED: Added .onClick here
+        WindowedScreenButton.onClick.RemoveListener(GameWindowed);
+        borderlessButton.onClick.RemoveListener(GameBorderless);
     }
 
     private void PauseGame()
@@ -151,7 +154,6 @@ public class Pause_Settings : MonoBehaviour
 
     private void GameFullScreen()
     {
-        //Screen.Resolution(1920, 1080, FullScreenMode.ExclusivefullScreen);
         isWindowFS = false;
         isWindowed = false;
         isExclusiveFS = true;
@@ -160,7 +162,6 @@ public class Pause_Settings : MonoBehaviour
 
     private void GameWindowed()
     {
-        //screen.Resolution(1920, 1080, FullScreenmode.FullScreenWindow);
         isExclusiveFS = false;
         isWindowed = false;
         isWindowFS = true;
@@ -169,51 +170,50 @@ public class Pause_Settings : MonoBehaviour
 
     private void GameBorderless()
     {
-        //screen.Resolution(1280, 720, FullScreenMode.Windowed);
         isExclusiveFS = false;
         isWindowFS = false;
         isWindowed = true;
         Debug.Log("screen set to windowed and resolution is set to 720p");
     }
-    /*
+
+    // FIXED: Uncommented this and cleaned up minor typos so Unity recognizes the target listener
     private void OnResDropChanged(int index)
     {
         if(index == 0 && isExclusiveFS == true)
         {
-            screen.Resolition(1920, 1080, FullScreenMode.ExclusivefullScreen);
+            Screen.SetResolution(1920, 1080, FullScreenMode.ExclusiveFullScreen);
         }
-        else  if (index == 1 && isExclusiveFS == true)
+        else if (index == 1 && isExclusiveFS == true)
         {
-            screen.Resolution(1280, 720, FullScreenMode.ExclusivefullScreen);
+            Screen.SetResolution(1280, 720, FullScreenMode.ExclusiveFullScreen);
         }
-        else  if (index == 2 && isExclusiveFS == true)
+        else if (index == 2 && isExclusiveFS == true)
         {
-            screen.Resolution(640, 480, FullScreenMode.ExclusivefullScreen);
+            Screen.SetResolution(640, 480, FullScreenMode.ExclusiveFullScreen);
         }
-        else  if (index == 0 && isWindowFS == true)
+        else if (index == 0 && isWindowFS == true)
         {
-            screen.Resolition(1920, 1080, FullScreenMode.FullScreenWindow);
+            Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
         }
         else if (index == 1 && isWindowFS == true)
         {
-            screen.Resolition(1280, 720, FullScreenMode.FullScreenWindow);
+            Screen.SetResolution(1280, 720, FullScreenMode.FullScreenWindow);
         }
         else if (index == 2 && isWindowFS == true)
         {
-            screen.Resolition(640, 480, FullScreenMode.FullScreenWindow);
+            Screen.SetResolution(640, 480, FullScreenMode.FullScreenWindow);
         }
-        else if (Index == 0 && isExclusiveFS == true)
+        else if (index == 0 && isWindowed == true)
         {
-            screen.Resolition(1920, 1080, FullScreenMode.Windowed);
+            Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
         }
-        else if (index == 1 && isWindowFS == ture)
+        else if (index == 1 && isWindowed == true)
         {
-            screen.Resolition(1280, 720, FullScreenMode.Windowed);
+            Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
         }
         else if (index == 2 && isWindowed == true)
         {
-            screen.Resolition(640, 480, FullScreenMode.Windowed);
+            Screen.SetResolution(640, 480, FullScreenMode.Windowed);
         }
     }
-    */
 }
