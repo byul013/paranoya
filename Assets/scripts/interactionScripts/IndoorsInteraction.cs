@@ -7,13 +7,15 @@ using UnityEngine.UI;
 
 public class IndoorsInteraction : MonoBehaviour
 {
+    // instead of making dialogue in inspector change it to a scriptable object holding all interactions for easier localization
+
     [SerializeField] private NPCData npcData;
 
     [Header("UI References")]
     [SerializeField] private GameObject IndoorDialoguePanel;
     [SerializeField] private TextMeshProUGUI npcNameText;
     [SerializeField] private TextMeshProUGUI npcDialogueText;
-    [SerializeField] private Transform choicesContainer; // empty transform for choice tab
+    [SerializeField] private Transform choicesContainer;
     [SerializeField] private GameObject choiceButtonPrefab;
 
     [Header("Text Settings")]

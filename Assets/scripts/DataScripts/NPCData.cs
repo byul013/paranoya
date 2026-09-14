@@ -68,10 +68,13 @@ public class NPCData : ScriptableObject
 
     public List<DialogueNode> visitDialoguesBad = new List<DialogueNode>();
 
+    public List<IndoorDialogueNode> IndoorDialogue = new List<IndoorDialogueNode>();
+
     [Header("Runtime State")]
     [HideInInspector] public bool hasBeenEvaluated = false;
     [HideInInspector] public bool isGood = false;
     [HideInInspector] public int visitCount = 0;
+    public int interactRecord;
 
     public void EvaluateAlignment()
     {
@@ -98,6 +101,17 @@ public class NPCData : ScriptableObject
 
         int index = Mathf.Min(visitCount, targetList.Count - 1);
         return targetList[index];
+    }
+
+    public IndoorDialogueNode GetStartingDialogueNodeIndoor()
+    {
+        Debug.Log($"Indoor interaction started. Times interacted: {interactRecord}");
+        if (IndoorDialogue == null || IndoorDialogue.Count == 0)
+        {
+            return null;
+        }
+        int index = Mathf.Clamp(interactRecord - 1, 0, IndoorDialogue.Count - 1);
+        return IndoorDialogue[index];// return current dialogue node index 
     }
 
     public void IncrementVisitCount()

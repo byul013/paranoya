@@ -3540,6 +3540,7 @@ GameObject:
   - component: {fileID: 678049278}
   - component: {fileID: 678049277}
   - component: {fileID: 678049280}
+  - component: {fileID: 678049281}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -3631,8 +3632,29 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.020000001, y: 0.020000007, z: 0.020000005}
-  m_Center: {x: -3.4924597e-10, y: 0, z: 0.0000000018626451}
+  m_Size: {x: 0.012, y: 0.020000007, z: 0.020000005}
+  m_Center: {x: 0.0038, y: 0, z: 0.0000000018626451}
+--- !u!65 &678049281
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678049276}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.004, y: 0.020000007, z: 0.020000005}
+  m_Center: {x: -0.007, y: 0, z: 0.0000000018626451}
 --- !u!1 &686453717
 GameObject:
   m_ObjectHideFlags: 0
@@ -4272,8 +4294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 176606160}
-  interactKey: 101
   hungerScript: {fileID: 770790272}
+  shopCycle: 3
 --- !u!65 &774737112
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4289,7 +4311,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -8158,6 +8180,7 @@ MonoBehaviour:
   actionButtonsPanel: {fileID: 1598471957}
   textSpeed: 0.03
   foodSystem: {fileID: 573651089}
+  scraps: {fileID: 0}
 --- !u!1 &2041655963
 GameObject:
   m_ObjectHideFlags: 0
@@ -8524,12 +8547,16 @@ MonoBehaviour:
   gameSettingsPanel: {fileID: 1993056699}
   audioSettingsPanel: {fileID: 794595543}
   displaySettingsPanel: {fileID: 24990042}
+  screenResDrop: {fileID: 0}
   resumeButton: {fileID: 1299840502}
   quitButton: {fileID: 109910508}
   settingsButton: {fileID: 108068167}
   gameSettingsButton: {fileID: 2048538754}
   audioSettingsButton: {fileID: 2071767308}
   displaySettingsButton: {fileID: 1454733962}
+  fullScreenButton: {fileID: 0}
+  WindowedScreenButton: {fileID: 0}
+  borderlessButton: {fileID: 0}
 --- !u!1 &2062095347
 GameObject:
   m_ObjectHideFlags: 0

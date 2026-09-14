@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic; // FIXED: Added this namespace so Unity recognizes Lists
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -13,6 +13,8 @@ public class Pause_Settings : MonoBehaviour
     [SerializeField] private GameObject audioSettingsPanel;
     [SerializeField] private GameObject displaySettingsPanel;
     [SerializeField] private TMP_Dropdown screenResDrop;
+    [SerializeField] private TMP_Dropdown audioOutputDrop;
+    [SerializeField] private SliderInteraction sliderInteraction;
 
     [Header("UI header Buttons")]
     [SerializeField] private Button resumeButton;
@@ -27,7 +29,6 @@ public class Pause_Settings : MonoBehaviour
     [SerializeField] private Button WindowedScreenButton;
     [SerializeField] private Button borderlessButton;
 
-    // bool for screen mode
     private bool isExclusiveFS = false;
     private bool isWindowFS = false;
     private bool isWindowed = false;
@@ -37,14 +38,15 @@ public class Pause_Settings : MonoBehaviour
 
     private void Start ()
     {
-        // FIXED: Capitalized ClearOptions
         screenResDrop.ClearOptions();
-        
-        // Convert to string list because TMP_Dropdown prefers strings or OptionData
         List<string> ScreenResOptions = new List<string> { "1", "2", "3" };
-
         screenResDrop.AddOptions(ScreenResOptions);
         screenResDrop.onValueChanged.AddListener(OnResDropChanged);
+
+        audioOutputDrop.ClearOptions();
+        List<string> AudioOutputOptions = new List<string> {"1", "2", "3"};
+        audioOutputDrop.AddOptions(AudioOutputOptions);
+        audioOutputDrop.onValueChanged.AddListener(AudioOutputChange);
     }
 
     private void Update()
@@ -71,8 +73,6 @@ public class Pause_Settings : MonoBehaviour
         audioSettingsButton.onClick.AddListener(ShowAudioSettingsTab);
         displaySettingsButton.onClick.AddListener(ShowDisplaySettingsTab);
         fullScreenButton.onClick.AddListener(GameFullScreen);
-        
-        // FIXED: Added .onClick here
         WindowedScreenButton.onClick.AddListener(GameWindowed);
         borderlessButton.onClick.AddListener(GameBorderless);
     }
@@ -86,8 +86,6 @@ public class Pause_Settings : MonoBehaviour
         audioSettingsButton.onClick.RemoveListener(ShowAudioSettingsTab);
         displaySettingsButton.onClick.RemoveListener(ShowDisplaySettingsTab);
         fullScreenButton.onClick.RemoveListener(GameFullScreen);
-        
-        // FIXED: Added .onClick here
         WindowedScreenButton.onClick.RemoveListener(GameWindowed);
         borderlessButton.onClick.RemoveListener(GameBorderless);
     }
@@ -154,29 +152,28 @@ public class Pause_Settings : MonoBehaviour
 
     private void GameFullScreen()
     {
+        //Screen res set to exclusive full screen the game takes full control of the screen
         isWindowFS = false;
         isWindowed = false;
         isExclusiveFS = true;
-        Debug.Log("Screen res set to exclusive full screen the game takes full control of the screen");
     }
 
     private void GameWindowed()
     {
+        //Game set to full screen window display will match the monitors refresh rate
         isExclusiveFS = false;
         isWindowed = false;
         isWindowFS = true;
-        Debug.Log("Game set to full screen window display will match the monitors refresh rate");
     }
 
     private void GameBorderless()
     {
+        //screen set to windowed and resolution is set to 720p
         isExclusiveFS = false;
         isWindowFS = false;
         isWindowed = true;
-        Debug.Log("screen set to windowed and resolution is set to 720p");
     }
 
-    // FIXED: Uncommented this and cleaned up minor typos so Unity recognizes the target listener
     private void OnResDropChanged(int index)
     {
         if(index == 0 && isExclusiveFS == true)
@@ -215,5 +212,15 @@ public class Pause_Settings : MonoBehaviour
         {
             Screen.SetResolution(640, 480, FullScreenMode.Windowed);
         }
+    }
+
+    private void AudioOutputChange (int index)
+    {
+        Debug.Log($"audio output changed to index : {index}");
+    }
+
+    public void AudioLevelChange(float value)
+    {
+        AudioListener.volume = value;
     }
 }

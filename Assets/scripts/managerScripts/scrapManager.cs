@@ -12,7 +12,7 @@ public class scrapManager : MonoBehaviour
 
     public void GainScraps (NPCData heldScraps)
     {
-        playerScraps = playerScraps + heldScraps.heldScraps; // dont forget.heldScraps!!
+        playerScraps = playerScraps + heldScraps.heldScraps; // dont forget .heldScraps!!
         Debug.Log($"Scraps Gained! current Scraps = {playerScraps}");
     }
 

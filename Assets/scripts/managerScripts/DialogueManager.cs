@@ -196,7 +196,7 @@ public class DialogueManager : MonoBehaviour
             insideSpawner.SpawnNPCInside(currentNPC);
             foodSystem.AddFood(currentNPC);
             foodSystem.AddWater(currentNPC);
-            scraps.GainScraps(currentNPC);// gives player the NPCs held scraps
+            scraps.GainScraps(currentNPC);
         }
         if (spawner != null)
         {
