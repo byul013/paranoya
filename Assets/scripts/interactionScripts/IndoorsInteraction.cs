@@ -24,10 +24,15 @@ public class IndoorsInteraction : MonoBehaviour
     private bool isInRange = false;
     private bool isTyping;
     private bool isStartingDialogue;
+
+    [Header("script references")]
     private NPCData currentNPC;
     private DialogueNode currentNode;
     private Coroutine typingCoroutine;
     private NPCIdentity identity;
+    private DialogueData dialogue;
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -88,7 +93,7 @@ public class IndoorsInteraction : MonoBehaviour
 
         SetCursorState(true);
 
-        currentNode = currentNPC.GetStartingDialogueNode();
+        currentNode = dialogue.GetStartingDialogueNode();
         
         if (currentNode != null)
         {

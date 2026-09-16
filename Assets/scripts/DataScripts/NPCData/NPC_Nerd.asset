@@ -24,41 +24,7 @@ MonoBehaviour:
   allowedRooms: 0000000001000000
   isGuaranteedGood: 0
   goodChancePercentage: 50
-  visitDialoguesGood:
-  - npcStatement: Hello perhaps you would be inclined to let me into your house I
-      might make it worth your while ^o^
-    endOfConversation: 0
-    choices:
-    - choiceText: tell me more
-      nextNode:
-        npcStatement: 'I cannot tell you everything just yet youll have to trust
-          me '
-        endOfConversation: 0
-        choices: []
-      triggersAlignmentCheck: 0
-    - choiceText: no go away
-      nextNode:
-        npcStatement: suit yourself
-        endOfConversation: 1
-        choices: []
-      triggersAlignmentCheck: 0
-  visitDialoguesBad:
-  - npcStatement: good evening human would you be inclined to let me into your territory?
-      I will make it worth it for thy
-    endOfConversation: 0
-    choices:
-    - choiceText: tell me more
-      nextNode:
-        npcStatement: 
-        endOfConversation: 0
-        choices: []
-      triggersAlignmentCheck: 0
-    - choiceText: no way jose go away
-      nextNode:
-        npcStatement: 
-        endOfConversation: 0
-        choices: []
-      triggersAlignmentCheck: 0
   hasBeenEvaluated: 1
   isGood: 0
   visitCount: 1
+  interactRecord: 0

@@ -19,11 +19,14 @@ public class DialogueManager : MonoBehaviour
     [Header("Text Settings")]
     [SerializeField] private float textSpeed = 0.03f;
 
+    [Header("script references")]
+    [SerializeField] private DialogueData dialogue;
     private NPCSpawn spawner;
     private NPCData currentNPC;
     [SerializeField] private FoodSystemManager foodSystem;
     [SerializeField] private scrapManager scraps;
     private DialogueNode currentNode;
+
     private Coroutine typingCoroutine;
     private bool isTyping = false;
     private bool isStartingDialogue = false;
@@ -64,7 +67,7 @@ public class DialogueManager : MonoBehaviour
 
         SetCursorState(true);
 
-        currentNode = currentNPC.GetStartingDialogueNode();
+        currentNode = dialogue.GetStartingDialogueNode();
 
         if (currentNode != null)
         {
@@ -190,7 +193,7 @@ public class DialogueManager : MonoBehaviour
     public void OnClickLetIn()
     {
         EndDialogue();
-        currentNPC.IncrementVisitCount();
+        dialogue.IncrementVisitCount();
         if (insideSpawner != null && currentNPC != null)
         {
             insideSpawner.SpawnNPCInside(currentNPC);
@@ -207,7 +210,7 @@ public class DialogueManager : MonoBehaviour
     public void OnClickTurnAway()
     {
         EndDialogue();
-        currentNPC.IncrementVisitCount();
+        dialogue.IncrementVisitCount();
         if (spawner != null) spawner.OnVisitorFinished(npcDied: false);
     }
 

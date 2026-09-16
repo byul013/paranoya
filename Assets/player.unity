@@ -1460,6 +1460,7 @@ MonoBehaviour:
   currentDay: 1
   maxVisitorsPerDay: 3
   timeBetweenVisitors: 10
+  dialogue: {fileID: 0}
 --- !u!1 &178256846
 GameObject:
   m_ObjectHideFlags: 0
@@ -6827,6 +6828,8 @@ GameObject:
   - component: {fileID: 1794008098}
   - component: {fileID: 1794008100}
   - component: {fileID: 1794008099}
+  - component: {fileID: 1794008102}
+  - component: {fileID: 1794008101}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Untagged
@@ -6899,6 +6902,48 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794008097}
   m_Mesh: {fileID: -5495902117074765545, guid: ce04e61d746f76b429cb57f7cb315d4b, type: 3}
+--- !u!65 &1794008101
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794008097}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.005, y: 0.020000001, z: 0.019999998}
+  m_Center: {x: -0.0075, y: 0.00000008940697, z: 0}
+--- !u!65 &1794008102
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794008097}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.01, y: 0.020000001, z: 0.019999998}
+  m_Center: {x: 0.0027, y: 0.00000008940697, z: 0}
 --- !u!1 &1794761140
 GameObject:
   m_ObjectHideFlags: 0
@@ -8179,6 +8224,7 @@ MonoBehaviour:
   insideSpawner: {fileID: 1340015984}
   actionButtonsPanel: {fileID: 1598471957}
   textSpeed: 0.03
+  dialogue: {fileID: 0}
   foodSystem: {fileID: 573651089}
   scraps: {fileID: 0}
 --- !u!1 &2041655963
@@ -8548,6 +8594,8 @@ MonoBehaviour:
   audioSettingsPanel: {fileID: 794595543}
   displaySettingsPanel: {fileID: 24990042}
   screenResDrop: {fileID: 0}
+  audioOutputDrop: {fileID: 0}
+  sliderInteraction: {fileID: 0}
   resumeButton: {fileID: 1299840502}
   quitButton: {fileID: 109910508}
   settingsButton: {fileID: 108068167}
@@ -8568,6 +8616,8 @@ GameObject:
   - component: {fileID: 2062095350}
   - component: {fileID: 2062095349}
   - component: {fileID: 2062095348}
+  - component: {fileID: 2062095352}
+  - component: {fileID: 2062095351}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -8640,6 +8690,48 @@ Transform:
   m_Children: []
   m_Father: {fileID: 735182948}
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
+--- !u!65 &2062095351
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062095347}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.005, y: 0.020000052, z: 0.020000005}
+  m_Center: {x: -0.0075, y: -0.000000014901161, z: 0.0000000018626451}
+--- !u!65 &2062095352
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062095347}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.013, y: 0.020000052, z: 0.020000005}
+  m_Center: {x: 0.0041, y: -0.000000014901161, z: 0.0000000018626451}
 --- !u!1 &2071767306
 GameObject:
   m_ObjectHideFlags: 0

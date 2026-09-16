@@ -118,6 +118,7 @@ public class Pause_Settings : MonoBehaviour
 
     private void OpenMainSettings()
     {
+        // dont forget to add language changing settings dropdown
         pausePanel.SetActive(false);
         settingsPanel.SetActive(true);
         ShowGameSettingsTab();
@@ -223,4 +224,5 @@ public class Pause_Settings : MonoBehaviour
     {
         AudioListener.volume = value;
     }
+
 }

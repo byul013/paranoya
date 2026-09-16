@@ -24,16 +24,20 @@ public class NPCSpawn : MonoBehaviour
     private int visitorsToday = 0;
     private float timer;
     private bool currentlyAtDoor = false;
-    private NPCData currentVisitorData;
     private bool inDialogue = false;
+
+    [Header("script references")]
+    private NPCData currentVisitorData;
+    [SerializeField] private DialogueData dialogue;
+
 
     private void Start()
     {
         foreach (NPCData npc in masterNPCPool)
         {
-            if (npc != null)
+            if (npc != null && dialogue != null)
             {
-                npc.ResetRuntimeState();
+                dialogue.ResetRuntimeState();
             }
         }
         StartNewDay();
@@ -80,7 +84,7 @@ public class NPCSpawn : MonoBehaviour
         currentVisitorData = todaysVisitors[0];
         todaysVisitors.RemoveAt(0);
 
-        currentVisitorData.EvaluateAlignment();
+        dialogue.EvaluateAlignment();
 
         if (doorWindowSpriteRenderer != null)
         {

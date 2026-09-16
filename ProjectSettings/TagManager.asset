@@ -7,6 +7,7 @@ TagManager:
   - LivingRoom1
   - LivingRoom2
   - Room1Space1
+  - NPC
   layers:
   - Default
   - TransparentFX
