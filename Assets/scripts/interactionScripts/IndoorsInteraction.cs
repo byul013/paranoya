@@ -4,10 +4,10 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-
 public class IndoorsInteraction : MonoBehaviour
 {
-    // instead of making dialogue in inspector change it to a scriptable object holding all interactions for easier localization
+    [Header("Language Settings")]
+    [SerializeField] private Language currentLanguage = Language.ENG;
 
     [SerializeField] private NPCData npcData;
 
@@ -25,14 +25,12 @@ public class IndoorsInteraction : MonoBehaviour
     private bool isTyping;
     private bool isStartingDialogue;
 
-    [Header("script references")]
+    [Header("Script References")]
+    [SerializeField] private DialogueData dialogue;
     private NPCData currentNPC;
     private DialogueNode currentNode;
     private Coroutine typingCoroutine;
     private NPCIdentity identity;
-    private DialogueData dialogue;
-
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -71,7 +69,7 @@ public class IndoorsInteraction : MonoBehaviour
                 if (isTyping)
                 {
                     StopCoroutine(typingCoroutine);
-                    npcDialogueText.text = currentNode.npcStatement;
+                    npcDialogueText.text = currentNode.npcStatement.GetText(currentLanguage);
                     isTyping = false;
                     ShowNodeChoices(currentNode);
                     return;
@@ -93,8 +91,11 @@ public class IndoorsInteraction : MonoBehaviour
 
         SetCursorState(true);
 
-        currentNode = dialogue.GetStartingDialogueNode();
-        
+        if (dialogue != null)
+        {
+            currentNode = dialogue.GetStartingDialogueNodeIndoor();
+        }
+
         if (currentNode != null)
         {
             StartCoroutine(IgnoreInitialInputFrame());
@@ -119,7 +120,8 @@ public class IndoorsInteraction : MonoBehaviour
         ClearChoices();
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-        typingCoroutine = StartCoroutine(TypeText(node.npcStatement));
+        string translatedText = node.npcStatement.GetText(currentLanguage);
+        typingCoroutine = StartCoroutine(TypeText(translatedText));
     }
 
     private IEnumerator TypeText(string text)
@@ -150,7 +152,10 @@ public class IndoorsInteraction : MonoBehaviour
                 btnObj.SetActive(true);
 
                 TextMeshProUGUI btnText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
-                if (btnText != null) btnText.text = capturedChoice.choiceText;
+                if (btnText != null) 
+                {
+                    btnText.text = capturedChoice.choiceText.GetText(currentLanguage);
+                }
 
                 Button btnComponent = btnObj.GetComponent<Button>();
                 if (btnComponent != null)
@@ -200,5 +205,10 @@ public class IndoorsInteraction : MonoBehaviour
     {
         Cursor.lockState = isDialogueActive ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isDialogueActive;
+    }
+
+    public void SetLanguage(Language lang)
+    {
+        currentLanguage = lang;
     }
 }

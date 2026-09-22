@@ -10,6 +10,12 @@ public class NPCSpawn : MonoBehaviour
     [Header("NPC Pools")]
     [SerializeField] private List<NPCData> masterNPCPool = new List<NPCData>();
 
+    [Header("Dialogue Pool")]
+    [Tooltip("Drag all DialogueData ScriptableObjects here in the Inspector.")]
+    [SerializeField] private List<DialogueData> dialoguePool = new List<DialogueData>();
+
+    private Dictionary<string, DialogueData> dialogueLookup = new Dictionary<string, DialogueData>();
+
     private List<NPCData> todaysVisitors = new List<NPCData>();
 
     [Header("Visual & Audio")]
@@ -24,23 +30,55 @@ public class NPCSpawn : MonoBehaviour
     private int visitorsToday = 0;
     private float timer;
     private bool currentlyAtDoor = false;
-    private bool inDialogue = false;
-
-    [Header("script references")]
     private NPCData currentVisitorData;
-    [SerializeField] private DialogueData dialogue;
-
+    private DialogueData currentVisitorDialogue;
+    private bool inDialogue = false;
 
     private void Start()
     {
-        foreach (NPCData npc in masterNPCPool)
+        BuildDialogueLookup();
+
+        foreach (DialogueData dialogue in dialoguePool)
         {
-            if (npc != null && dialogue != null)
+            if (dialogue != null)
             {
                 dialogue.ResetRuntimeState();
             }
         }
+
         StartNewDay();
+    }
+
+    private void BuildDialogueLookup()
+    {
+        dialogueLookup.Clear();
+        foreach (DialogueData data in dialoguePool)
+        {
+            if (data == null) continue;
+
+            // Sanitize asset name: lowercase and strip out common suffixes/spaces/underscores
+            string cleanKey = SanitizeKey(data.name);
+
+            if (!dialogueLookup.ContainsKey(cleanKey))
+            {
+                dialogueLookup.Add(cleanKey, data);
+            }
+            else
+            {
+                Debug.LogWarning($"[NPCSpawn] Duplicate key found in dialogue lookup: '{cleanKey}' for asset '{data.name}'");
+            }
+        }
+    }
+
+    private string SanitizeKey(string rawName)
+    {
+        if (string.IsNullOrEmpty(rawName)) return "";
+        return rawName.Trim()
+                      .ToLower()
+                      .Replace("dialogue", "")
+                      .Replace("data", "")
+                      .Replace("_", "")
+                      .Replace(" ", "");
     }
 
     private void Update()
@@ -59,7 +97,7 @@ public class NPCSpawn : MonoBehaviour
 
     public void StartNewDay()
     {
-        currentDay = currentDay + 1;
+        currentDay++;
         visitorsToday = 0;
         currentlyAtDoor = false;
         timer = timeBetweenVisitors;
@@ -74,7 +112,7 @@ public class NPCSpawn : MonoBehaviour
             todaysVisitors.Add(tempPool[randomIndex]);
             tempPool.RemoveAt(randomIndex);
         }
-        Debug.Log($"--- Day {currentDay} STARTED --- visitors qued for today : {todaysVisitors.Count}");
+        Debug.Log($"--- Day {currentDay} STARTED --- visitors queued for today: {todaysVisitors.Count}");
     }
 
     private void SpawnNextVisitor()
@@ -84,7 +122,20 @@ public class NPCSpawn : MonoBehaviour
         currentVisitorData = todaysVisitors[0];
         todaysVisitors.RemoveAt(0);
 
-        dialogue.EvaluateAlignment();
+        // Sanitize the current visitor's NPC name to match the dictionary key
+        string npcKey = SanitizeKey(currentVisitorData.npcName);
+
+        if (dialogueLookup.TryGetValue(npcKey, out DialogueData matchedDialogue))
+        {
+            currentVisitorDialogue = matchedDialogue;
+            currentVisitorDialogue.EvaluateAlignment();
+            Debug.Log($"[NPCSpawn] Successfully matched dialogue asset '{matchedDialogue.name}' to visitor '{currentVisitorData.npcName}'");
+        }
+        else
+        {
+            currentVisitorDialogue = null;
+            Debug.LogError($"[NPCSpawn] No matching DialogueData asset found for NPC: '{currentVisitorData.npcName}' (Key searched: '{npcKey}'). Check dialoguePool list on NPCSpawn object!");
+        }
 
         if (doorWindowSpriteRenderer != null)
         {
@@ -117,6 +168,7 @@ public class NPCSpawn : MonoBehaviour
         }
 
         currentVisitorData = null;
+        currentVisitorDialogue = null;
         timer = timeBetweenVisitors;
 
         if (doorWindowSpriteRenderer != null)
@@ -126,14 +178,11 @@ public class NPCSpawn : MonoBehaviour
 
         if (visitorsToday >= maxVisitorsPerDay)
         {
-            Debug.Log("All 3 visitors for today have been handled. Go to bed to advance to the next day!");
+            Debug.Log("All visitors for today handled.");
         }
     }
 
-    public bool CanSleep()
-    {
-        return visitorsToday >= maxVisitorsPerDay;
-    }
-
+    public bool CanSleep() => visitorsToday >= maxVisitorsPerDay;
     public NPCData GetCurrentVisitor() => currentVisitorData;
+    public DialogueData GetCurrentVisitorDialogue() => currentVisitorDialogue;
 }

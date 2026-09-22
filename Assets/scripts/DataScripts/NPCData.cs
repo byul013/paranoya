@@ -10,6 +10,7 @@ public class NPCData : ScriptableObject
     public Sprite npcSprite;
     public AudioClip doorbellSound;
     public GameObject npcPrefab;
+    public DialogueData dialogueData;
 
     [Header("Items")]
     public int HeldFood;

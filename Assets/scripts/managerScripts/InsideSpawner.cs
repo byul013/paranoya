@@ -15,7 +15,7 @@ public class InsideSpawner : MonoBehaviour
         {
             return;
         }
-
+    
         List<InsideSpawnPoint> validPoints = new List<InsideSpawnPoint>();
 
         foreach (InsideSpawnPoint point in houseSpawnPoints)

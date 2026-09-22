@@ -16,6 +16,7 @@ MonoBehaviour:
   npcSprite: {fileID: 21300000, guid: 90cd2cc132f435344bc6dd0af955376c, type: 3}
   doorbellSound: {fileID: 8300000, guid: de775138f0f360f4f9b791674017344c, type: 3}
   npcPrefab: {fileID: 4832971221142199699, guid: 9cae94a2b82d67442a442b79f2cef229, type: 3}
+  dialogueData: {fileID: 11400000, guid: 5a6aa427b7ae94711abc4cfbc4970b47, type: 2}
   HeldFood: 3
   HeldWater: 3
   heldScraps: 2
