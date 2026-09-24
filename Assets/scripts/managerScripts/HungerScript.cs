@@ -5,10 +5,9 @@ using UnityEngine;
 public class HungerScript : MonoBehaviour
 {
     [Header("Script references")]
-    [SerializeField] private NPCData npcData;
     [SerializeField] private FoodSystemManager foodSystem;
     [SerializeField] private int starveDuration = 3;
-    [SerializeField] private GameObject deathPanel;
+    [SerializeField] private GameObject DeathPanel;
     [SerializeField] private InsideSpawner insideSpawnNPC;
     private int currentStarveDays;
 
@@ -19,20 +18,22 @@ public class HungerScript : MonoBehaviour
 
     public void LoseHunger()
     {
-        int totalFoodDemand = 0;
-        int totalWaterDemand = 0;
+        int totalHungerDemand = 0;
+        int totalThirstDemand = 0;
 
-        foreach (GameObject npcObj in insideSpawner.activeInsideNPCs)
+        foreach (GameObject npcObj in insideSpawnNPC.activeInsideNPCs)
         {
             if (npcObj == null) continue;
-        }
-        NPCIdentity identity = npcObj.GetComponent();
-        if (identity != null && identity.npcData != null)
+
+            NPCIdentity identity = npcObj.GetComponent<NPCIdentity>();
+            if (identity != null && identity.npcData != null)
             {
-                totalHungerDemand += identity.npcData.Hunger;
-                totalThirstDemand += identity.npcData.Thirst;
+                totalHungerDemand += identity.npcData.HeldFood;
+                totalThirstDemand += identity.npcData.HeldWater;
             }
-       if (foodSystem.food >= totalHungerDemand && foodSystem.water >= totalThirstDemand)
+        }
+
+        if (foodSystem.food >= totalHungerDemand && foodSystem.water >= totalThirstDemand)
         {
             foodSystem.food -= totalHungerDemand;
             foodSystem.water -= totalThirstDemand;
@@ -49,9 +50,10 @@ public class HungerScript : MonoBehaviour
 
     public void StartStarve()
     {
-        starveDuration -= 1;
-        Debug.Log($"Starvation started days remaining until death {starveDuration}");
-        if (starveDuration <= 0)
+        currentStarveDays -= 1;
+        Debug.Log($"Starvation started. Days remaining until death: {currentStarveDays}");
+
+        if (currentStarveDays <= 0)
         {
             Die();
         }
@@ -60,7 +62,7 @@ public class HungerScript : MonoBehaviour
     public void Die()
     {
         Time.timeScale = 0;
-        DeathPanel.SetActive(true);
+        if (DeathPanel != null) DeathPanel.SetActive(true);
         Debug.Log("You died");
     }
 }

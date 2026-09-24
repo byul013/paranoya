@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCIdentity : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("References")]
+    public NPCData npcData;
+    public DialogueData dialogue;
+    public IndoorsInteraction indoorScript;
+    // try using Identity to manage NPC data and dialogue for inside interaction script
 
-    // Update is called once per frame
-    void Update()
+    
+
+    public void ManageData()
     {
-        
+
     }
 }

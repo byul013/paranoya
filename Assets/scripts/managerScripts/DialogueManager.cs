@@ -5,6 +5,9 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
+    [Header("Language Settings")]
+    [SerializeField] private Language currentLanguage = Language.ENG;
+
     [Header("UI References")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI npcNameText;
@@ -19,14 +22,17 @@ public class DialogueManager : MonoBehaviour
     [Header("Text Settings")]
     [SerializeField] private float textSpeed = 0.03f;
 
+    [Header("Script References")]
+    [SerializeField] private DialogueData dialogue;
     private NPCSpawn spawner;
     private NPCData currentNPC;
     [SerializeField] private FoodSystemManager foodSystem;
+    [SerializeField] private scrapManager scraps;
     private DialogueNode currentNode;
+
     private Coroutine typingCoroutine;
     private bool isTyping = false;
     private bool isStartingDialogue = false;
-
 
     private void Update()
     {
@@ -39,7 +45,8 @@ public class DialogueManager : MonoBehaviour
                 if (isTyping)
                 {
                     StopCoroutine(typingCoroutine);
-                    npcDialogueText.text = currentNode.npcStatement;
+                    // Extract text for the active language when skipping
+                    npcDialogueText.text = currentNode.npcStatement.GetText(currentLanguage);
                     isTyping = false;
                     ShowNodeChoices(currentNode);
                     return;
@@ -58,12 +65,20 @@ public class DialogueManager : MonoBehaviour
         currentNPC = npc;
         spawner = npcSpawner;
 
+        DialogueData dialogueAsset = spawner.GetCurrentVisitorDialogue();
+
+        if (dialogueAsset == null)
+        {
+            Debug.LogError($"[DialogueManager] Cannot start dialogue for {npc?.npcName} because DialogueData asset is null!");
+            return;
+        }
+
         if (dialoguePanel != null) dialoguePanel.SetActive(true);
         if (npcNameText != null) npcNameText.text = currentNPC.npcName;
 
         SetCursorState(true);
 
-        currentNode = currentNPC.GetStartingDialogueNode();
+        currentNode = dialogueAsset.GetStartingDialogueNode();
 
         if (currentNode != null)
         {
@@ -72,7 +87,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"[DialogueManager] No starting DialogueNode assigned on {currentNPC.npcName}!");
+            Debug.LogError($"[DialogueManager] GetStartingDialogueNode returned null for {currentNPC?.npcName}!");
         }
     }
 
@@ -93,7 +108,10 @@ public class DialogueManager : MonoBehaviour
             actionButtonsPanel.SetActive(false);
 
         if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-        typingCoroutine = StartCoroutine(TypeText(node.npcStatement));
+        
+        // Pass the translated string to the typewriter coroutine
+        string targetText = node.npcStatement.GetText(currentLanguage);
+        typingCoroutine = StartCoroutine(TypeText(targetText));
     }
 
     private IEnumerator TypeText(string text)
@@ -129,7 +147,11 @@ public class DialogueManager : MonoBehaviour
                 btnObj.SetActive(true);
 
                 TextMeshProUGUI btnText = btnObj.GetComponentInChildren<TextMeshProUGUI>();
-                if (btnText != null) btnText.text = choice.choiceText;
+                if (btnText != null) 
+                {
+                    // Fetch choice text in active language
+                    btnText.text = choice.choiceText.GetText(currentLanguage);
+                }
 
                 Button btnComponent = btnObj.GetComponent<Button>();
                 if (btnComponent != null)
@@ -188,14 +210,28 @@ public class DialogueManager : MonoBehaviour
     public void OnClickLetIn()
     {
         EndDialogue();
-        currentNPC.IncrementVisitCount();
+
+        DialogueData dialogueAsset = spawner != null ? spawner.GetCurrentVisitorDialogue() : null;
+        if (dialogueAsset != null)
+        {
+            dialogueAsset.IncrementVisitCount();
+        }
+
         if (insideSpawner != null && currentNPC != null)
         {
             insideSpawner.SpawnNPCInside(currentNPC);
-            foodSystem.AddFood(currentNPC);
-            foodSystem.AddWater(currentNPC);
+            if (foodSystem != null)
+            {
+                foodSystem.AddFood(currentNPC);
+                foodSystem.AddWater(currentNPC);
+            }
+            if (scraps != null)
+            {
+                scraps.GainScraps(currentNPC);
+            }
         }
-        if (spawner != null)
+
+        if (spawner != null && currentNPC != null)
         {
             spawner.OnVisitorFinished(npcDied: !currentNPC.isGood);
         }
@@ -204,7 +240,7 @@ public class DialogueManager : MonoBehaviour
     public void OnClickTurnAway()
     {
         EndDialogue();
-        currentNPC.IncrementVisitCount();
+        dialogue.IncrementVisitCount();
         if (spawner != null) spawner.OnVisitorFinished(npcDied: false);
     }
 
@@ -212,5 +248,10 @@ public class DialogueManager : MonoBehaviour
     {
         Cursor.lockState = isDialogueActive ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isDialogueActive;
+    }
+
+    public void SetLanguage(Language lang)
+    {
+        currentLanguage = lang;
     }
 }

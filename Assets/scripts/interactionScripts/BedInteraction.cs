@@ -3,8 +3,8 @@ using UnityEngine;
 public class BedInteraction : MonoBehaviour
 {
     [SerializeField] private NPCSpawn spawner;
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private HungerScript hungerScript;
+    public int shopCycle = 3;
 
     private bool playerInRange = false;
 
@@ -23,7 +23,17 @@ public class BedInteraction : MonoBehaviour
             Debug.Log("Sleeping... Passing time to the next day!");
 
             spawner.StartNewDay();
-            hungerScript.LooseHunger();
+            hungerScript.LoseHunger();
+            if (shopCycle >= 0)
+            {
+                shopCycle -= 1;
+                Debug.Log($"-1 day from the cycle current day :  {shopCycle}");
+            }
+            else
+            {
+                shopCycle = 3;
+                Debug.Log("shop cycle reset to 3");
+            }
         }
         else
         {
