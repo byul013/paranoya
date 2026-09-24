@@ -11,7 +11,7 @@ public class TItleScreen : MonoBehaviour
     [SerializeField] private NPCData eventNPCs;
 
     [Header("UIreferences")]
-    [SerializeField] private gameObject titlePanel;
+    [SerializeField] private GameObject titlePanel;
     [SerializeField] private Button startButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
@@ -19,7 +19,7 @@ public class TItleScreen : MonoBehaviour
     private void Start()
     {
         titlePanel.SetActive(true);
-        time.timeScale = 0f;
+        Time.timeScale = 0f;
     }
 
     private void OnEnable()
@@ -36,11 +36,11 @@ public class TItleScreen : MonoBehaviour
         quitButton.onClick.RemoveListener(QuitGame);
     }
 
-    private void StartGame(NPCData )
+    private void StartGame()
     {
-        time.timeScale = 1f;
-        Debug.Log("Game started.");
-        
+        Time.timeScale = 1f;
+        Debug.Log($"Game started. {eventNPCs}'s event will start");
+
     }
 
     private void OpenSettingsMenu()

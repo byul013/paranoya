@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CurrenStatus
+public enum CurrentStatus
 {
     // add more enumerators for each event
     startGame,
@@ -11,34 +11,5 @@ public enum CurrenStatus
 
 public class EventData : ScriptableObject
 {
-    private void Start()
-    {
-        startGame = true;
-    }
-
-    private void Update()
-    {
-        if(startGame == true)
-        {
-            ThiefEvent = false;
-            StartGameEvent();
-        }
-
-        if(Thief)
-        {
-            StartGameEvent = false;
-            ThiefEvent();
-        }
-    }
-    
-    public void StartGameEvent()
-    {
-        // add funcitons to start game(title animation if one) etc
-        
-    }
-
-    public void ThiefEvent()
-    {
-
-    }
+   
 }
