@@ -1,6 +1,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class DialogueChoice
+{
+    public string choiceText;
+    public DialogueNode nextNode;
+    public bool triggersAlignmentCheck;
+}
+
+[System.Serializable]
+public class DialogueNode
+{
+    [TextArea(2, 4)]
+    public string npcStatement;
+
+    public bool endOfConversation;
+
+    public List<DialogueChoice> choices = new List<DialogueChoice>();
+}
+
+[System.Serializable]
+public class IndoorChoice
+{
+    public string indoorChoiceText;
+    public DialogueNode nextNode;
+}
+
+[System.Serializable]
+public class IndoorDialogueNode
+{
+    [TextArea(2, 4)]
+    public string indoorNpcLine;
+    public bool endConvo;
+    public List<IndoorChoice> choices = new List<IndoorChoice>();
+}
 
 [CreateAssetMenu(fileName = "NewNPCData", menuName = "Door System/NPC Data")]
 public class NPCData : ScriptableObject
