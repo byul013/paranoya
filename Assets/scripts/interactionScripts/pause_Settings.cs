@@ -90,7 +90,7 @@ public class Pause_Settings : MonoBehaviour
         borderlessButton.onClick.RemoveListener(GameBorderless);
     }
 
-    private void PauseGame()
+    public void PauseGame()
     {
         isPaused = true;
         Time.timeScale = 0f;

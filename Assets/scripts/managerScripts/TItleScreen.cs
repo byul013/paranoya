@@ -9,7 +9,8 @@ public class TItleScreen : MonoBehaviour
     [Header("script references")]
     [SerializeField] private DialogueManager dialogueEvent;
     [SerializeField] private NPCData eventNPCs;
-    private GameStartEvent startEvent;
+    private IntroSequenceController introSequene;
+    private Pause_Settings settings;
 
     [Header("UIreferences")]
     [SerializeField] private GameObject titlePanel;
@@ -39,16 +40,17 @@ public class TItleScreen : MonoBehaviour
 
     private void StartGame()
     {
-        
+        titlePanel.SetActive(false);
+        introSequene.StartIntroSequence();
     }
 
     private void OpenSettingsMenu()
     {
-
+        settings.PauseGame();   
     }
 
     private void QuitGame()
     {
-
+        Application.Quit();
     }
 }
