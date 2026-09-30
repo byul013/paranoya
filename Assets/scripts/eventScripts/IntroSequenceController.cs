@@ -5,11 +5,11 @@ public class IntroSequenceController : MonoBehaviour
 {
     [Header("Scriptable Object References")]
     [SerializeField] private DialogueData phoneCallDialogue;
-    [SerializeField] private NPCData fatherNPCData; // References Father's NPCData asset
+    [SerializeField] private NPCData fatherNPCData;
 
     [Header("Scene Object References")]
     [SerializeField] private DialogueManager dialogueManager;
-    [SerializeField] private NPCSpawn npcSpawner; // Your outdoor visitor spawner
+    [SerializeField] private NPCSpawn npcSpawner;
     [SerializeField] private GameObject fatherNPCObject; 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip phoneStaticCutSound;
@@ -27,9 +27,6 @@ public class IntroSequenceController : MonoBehaviour
         DialogueManager.OnDialogueEnded -= HandleDialogueEnded;
     }
 
-    /// <summary>
-    /// Triggered by GameStartEvent.Raise() or GameEventListener
-    /// </summary>
     public void StartIntroSequence()
     {
         StartCoroutine(SequenceRoutine());

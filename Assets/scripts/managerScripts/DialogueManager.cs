@@ -66,7 +66,7 @@ public class DialogueManager : MonoBehaviour
         currentNPC = npc;
         spawner = npcSpawner;
 
-        DialogueData dialogueAsset = spawner.GetCurrentVisitorDialogue();
+        DialogueData dialogueAsset = spawner != null ? spawner.GetCurrentVisitorDialogue() : dialogue;
 
         if (dialogueAsset == null)
         {
@@ -75,7 +75,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         if (dialoguePanel != null) dialoguePanel.SetActive(true);
-        if (npcNameText != null) npcNameText.text = currentNPC.npcName;
+        if (npcNameText != null) npcNameText.text = currentNPC != null ? currentNPC.npcName : "";
 
         SetCursorState(true);
 
@@ -202,11 +202,14 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
+        DialogueData activeDialogue = (spawner != null) ? spawner.GetCurrentVisitorDialogue() : dialogue;
+
         if (dialoguePanel != null) dialoguePanel.SetActive(false);
         if (actionButtonsPanel != null) actionButtonsPanel.SetActive(false);
 
         SetCursorState(false);
-        OnDialogueEnded?.Invoke(finishedData);
+
+        OnDialogueEnded?.Invoke(activeDialogue);
     }
 
     public void OnClickLetIn()
@@ -242,7 +245,7 @@ public class DialogueManager : MonoBehaviour
     public void OnClickTurnAway()
     {
         EndDialogue();
-        dialogue.IncrementVisitCount();
+        if (dialogue != null) dialogue.IncrementVisitCount();
         if (spawner != null) spawner.OnVisitorFinished(npcDied: false);
     }
 
@@ -272,10 +275,7 @@ public class DialogueManager : MonoBehaviour
         if (npcNameText != null) npcNameText.text = speakerName;
 
         SetCursorState(true);
-
-        currentNode = dialogueData.standaloneStartingNode != null 
-            ? dialogueData.standaloneStartingNode 
-            : dialogueData.GetStartingDialogueNode();
+        currentNode = dialogueData.GetStartingDialogueNode();
 
         if (currentNode != null)
         {
