@@ -5,6 +5,7 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static System.Action<DialogueData> OnDialogueEnded;
     [Header("Language Settings")]
     [SerializeField] private Language currentLanguage = Language.ENG;
 
@@ -205,6 +206,7 @@ public class DialogueManager : MonoBehaviour
         if (actionButtonsPanel != null) actionButtonsPanel.SetActive(false);
 
         SetCursorState(false);
+        OnDialogueEnded?.Invoke(finishedData);
     }
 
     public void OnClickLetIn()
@@ -253,5 +255,36 @@ public class DialogueManager : MonoBehaviour
     public void SetLanguage(Language lang)
     {
         currentLanguage = lang;
+    }
+
+    public void StartStandaloneDialogue(DialogueData dialogueData, string speakerName = "")
+    {
+        currentNPC = null;
+        spawner = null;
+
+        if (dialogueData == null)
+        {
+            Debug.LogError("[DialogueManager] Standalone DialogueData asset is null!");
+            return;
+        }
+
+        if (dialoguePanel != null) dialoguePanel.SetActive(true);
+        if (npcNameText != null) npcNameText.text = speakerName;
+
+        SetCursorState(true);
+
+        currentNode = dialogueData.standaloneStartingNode != null 
+            ? dialogueData.standaloneStartingNode 
+            : dialogueData.GetStartingDialogueNode();
+
+        if (currentNode != null)
+        {
+            StartCoroutine(IgnoreInitialInputFrame());
+            DisplayNode(currentNode);
+        }
+        else
+        {
+            Debug.LogError("[DialogueManager] No starting node found for standalone dialogue!");
+        }
     }
 }

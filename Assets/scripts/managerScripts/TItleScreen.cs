@@ -9,6 +9,7 @@ public class TItleScreen : MonoBehaviour
     [Header("script references")]
     [SerializeField] private DialogueManager dialogueEvent;
     [SerializeField] private NPCData eventNPCs;
+    private GameStartEvent startEvent;
 
     [Header("UIreferences")]
     [SerializeField] private GameObject titlePanel;
@@ -38,9 +39,7 @@ public class TItleScreen : MonoBehaviour
 
     private void StartGame()
     {
-        Time.timeScale = 1f;
-        Debug.Log($"Game started. {eventNPCs}'s event will start");
-
+        
     }
 
     private void OpenSettingsMenu()
