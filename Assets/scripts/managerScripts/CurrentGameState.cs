@@ -1,0 +1,32 @@
+using UnityEngine;
+
+public enum GameState
+{
+    TitleScreen,
+    PlayingGame,
+    GameOver
+}
+
+public class CurrentGameState : MonoBehaviour
+{
+    public static CurrentGameState Instance { get; private set; }
+
+    public GameState state = GameState.TitleScreen; 
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        state = newState;
+    }
+}

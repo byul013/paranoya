@@ -6,13 +6,13 @@ using TMPro;
 
 public class TItleScreen : MonoBehaviour
 {
-    [Header("script references")]
+    [Header("Script References")]
     [SerializeField] private DialogueManager dialogueEvent;
     [SerializeField] private NPCData eventNPCs;
-    private IntroSequenceController introSequene;
-    private Pause_Settings settings;
+    [SerializeField] private IntroSequenceController introSequene;
+    [SerializeField] private Pause_Settings settings;
 
-    [Header("UIreferences")]
+    [Header("UI References")]
     [SerializeField] private GameObject titlePanel;
     [SerializeField] private Button startButton;
     [SerializeField] private Button settingsButton;
@@ -22,6 +22,8 @@ public class TItleScreen : MonoBehaviour
     {
         titlePanel.SetActive(true);
         Time.timeScale = 0f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void OnEnable()
@@ -40,13 +42,28 @@ public class TItleScreen : MonoBehaviour
 
     private void StartGame()
     {
-        titlePanel.SetActive(false);
-        introSequene.StartIntroSequence();
+        Time.timeScale = 1f;
+
+        if (titlePanel != null) titlePanel.SetActive(false);
+
+        if (CurrentGameState.Instance != null)
+        {
+            CurrentGameState.Instance.ChangeState(GameState.PlayingGame);
+        }
+
+        if (introSequene != null)
+        {
+            introSequene.StartIntroSequence();
+        }
+        else
+        {
+            Debug.LogError("[TItleScreen] IntroSequenceController reference is missing in the Inspector!");
+        }
     }
 
     private void OpenSettingsMenu()
     {
-        settings.PauseGame();   
+        if (settings != null) settings.PauseGame();   
     }
 
     private void QuitGame()
