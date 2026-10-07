@@ -46,7 +46,6 @@ public class DialogueManager : MonoBehaviour
                 if (isTyping)
                 {
                     StopCoroutine(typingCoroutine);
-                    // Extract text for the active language when skipping
                     npcDialogueText.text = currentNode.npcStatement.GetText(currentLanguage);
                     isTyping = false;
                     ShowNodeChoices(currentNode);

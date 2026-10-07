@@ -18,6 +18,8 @@ public class TItleScreen : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
 
+    [SerializeField] private bool playIntro = true;
+
     private void Start()
     {
         titlePanel.SetActive(true);
@@ -40,7 +42,7 @@ public class TItleScreen : MonoBehaviour
         quitButton.onClick.RemoveListener(QuitGame);
     }
 
-    private void StartGame()
+        private void StartGame()
     {
         Time.timeScale = 1f;
 
@@ -51,13 +53,9 @@ public class TItleScreen : MonoBehaviour
             CurrentGameState.Instance.ChangeState(GameState.PlayingGame);
         }
 
-        if (introSequene != null)
+        if (playIntro && introSequene != null)
         {
             introSequene.StartIntroSequence();
-        }
-        else
-        {
-            Debug.LogError("[TItleScreen] IntroSequenceController reference is missing in the Inspector!");
         }
     }
 

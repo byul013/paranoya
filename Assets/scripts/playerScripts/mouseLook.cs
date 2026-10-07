@@ -15,18 +15,15 @@ public class mouseLook : MonoBehaviour
 
     private void Update()
     {
-        if (CurrentGameState.Instance == null) return;
+        if (CurrentGameState.Instance == null)
+        {
+            return;
+        }
 
         GameState currentState = CurrentGameState.Instance.state;
 
         if (currentState == GameState.PlayingGame)
         {
-            if (Cursor.visible)
-            {
-                isCursorLocked = false;
-                return;
-            }
-
             if (!isCursorLocked)
             {
                 LockCursor(true);
