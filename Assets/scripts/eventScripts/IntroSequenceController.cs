@@ -14,8 +14,10 @@ public class IntroSequenceController : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip phoneStaticCutSound;
     [SerializeField] private AudioClip doorKnockSound;
+    [SerializeField] private AudioClip PhoneRingSound;
 
     private bool isPhoneCallFinished = false;
+    private bool PlayerAnsweredPhone = false;
 
     private void OnEnable()
     {
@@ -29,7 +31,7 @@ public class IntroSequenceController : MonoBehaviour
 
     public void StartIntroSequence()
     {
-        StartCoroutine(SequenceRoutine());
+        StartPhoneRing();
     }
 
     private IEnumerator SequenceRoutine()
@@ -68,6 +70,33 @@ public class IntroSequenceController : MonoBehaviour
         if (endedDialogue == phoneCallDialogue)
         {
             isPhoneCallFinished = true;
+        }
+    }
+
+    private void StartPhoneRing()
+    {
+        audioSource.clip = PhoneRingSound;
+        audioSource.Play();
+        CurrentGameState.Instance.ChangeState(GameState.GettingCalled);
+    }
+    
+    private void Update()
+    {
+        if (CurrentGameState.Instance == null) return;
+
+        if (CurrentGameState.Instance.state == GameState.GettingCalled)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                audioSource.Stop();
+                PlayerAnsweredPhone = true;
+                CurrentGameState.Instance.ChangeState(GameState.AnsweredThePhone);
+            }
+        }
+        if (PlayerAnsweredPhone == true)
+        {
+            StartCoroutine(SequenceRoutine());
+            PlayerAnsweredPhone = false;
         }
     }
 }

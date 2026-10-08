@@ -4,7 +4,9 @@ public enum GameState
 {
     TitleScreen,
     PlayingGame,
-    GameOver
+    GameOver,
+    GettingCalled,
+    AnsweredThePhone
 }
 
 public class CurrentGameState : MonoBehaviour

@@ -4158,14 +4158,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da00c46824ad643619e4b371070f4ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  phoneCallDialogue: {fileID: 0}
-  fatherNPCData: {fileID: 0}
-  dialogueManager: {fileID: 0}
-  npcSpawner: {fileID: 0}
-  fatherNPCObject: {fileID: 0}
-  audioSource: {fileID: 0}
+  phoneCallDialogue: {fileID: 11400000, guid: eb2d928494c4c4d9882936ed6082e422, type: 2}
+  fatherNPCData: {fileID: 11400000, guid: a61d64473149a421d94075b84f4d65e7, type: 2}
+  dialogueManager: {fileID: 2018297588}
+  npcSpawner: {fileID: 176606160}
+  fatherNPCObject: {fileID: 5393563574091180338, guid: 049d39ce3cafd4a52a3d2bd2e79274b0, type: 3}
+  audioSource: {fileID: 2000259859}
   phoneStaticCutSound: {fileID: 0}
-  doorKnockSound: {fileID: 0}
+  doorKnockSound: {fileID: 8300000, guid: de775138f0f360f4f9b791674017344c, type: 3}
 --- !u!1 &515127598
 GameObject:
   m_ObjectHideFlags: 0
