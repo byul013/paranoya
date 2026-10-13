@@ -22,6 +22,7 @@ public class TItleScreen : MonoBehaviour
 
     private void Start()
     {
+        //pause all other functions and display title screen while waiting for user to statrt quit etc..
         titlePanel.SetActive(true);
         Time.timeScale = 0f;
         Cursor.visible = true;

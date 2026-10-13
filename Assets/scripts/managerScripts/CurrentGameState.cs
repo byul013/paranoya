@@ -2,6 +2,7 @@ using UnityEngine;
 
 public enum GameState
 {
+    // can add and switch between different game states when needed
     TitleScreen,
     PlayingGame,
     GameOver,

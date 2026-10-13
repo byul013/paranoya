@@ -15,14 +15,17 @@ public class DisplayTip : MonoBehaviour
             case GameState.GettingCalled:
                 tipPanel.SetActive(true);
                 tipText.text = "Tip: Press \"E\" to answer the phone.";
+                Debug.Log("game state is getting called");
                 break;
 
             case GameState.AnsweredThePhone:
                 tipPanel.SetActive(false);
+                Debug.Log("Game state set to answered the phone");
                 break;
 
             default:
                 tipPanel.SetActive(false);
+                Debug.Log("tip panel set active");
                 break;
         }
     }
