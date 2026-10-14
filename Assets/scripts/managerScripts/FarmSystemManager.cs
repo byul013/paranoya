@@ -21,6 +21,8 @@ public class FarmSystemManager : MonoBehaviour
 
     [Header("script variables")]
     private bool isInPlantingRange = false;
+    public bool isWithering = false;
+    public bool isDead = false;
 
     private void Update()
     {
@@ -76,6 +78,21 @@ public class FarmSystemManager : MonoBehaviour
         {
             Debug.Log("player has left planting range");
             isInPlantingRange = false;
+        }
+    }
+
+    public void plantWitheringStatus()
+    {
+        if (isWithering)
+        {
+            currentPlantState = plantState.withering;
+            Debug.Log("plant state changed to withering");
+        }
+        
+        if (isDead)
+        {
+            currentPlantState = plantState.dead;
+            Debug.Log("plant state changed to dead");
         }
     }
 }
