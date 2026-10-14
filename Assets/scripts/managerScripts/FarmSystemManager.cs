@@ -10,7 +10,7 @@ public class FarmSystemManager : MonoBehaviour
     [SerializeField]private plantState currentPlantState = plantState.empty;
 
     [Header("Script references")]
-    
+
 
     [Header("other references")]
     [SerializeField] private GameObject plantPanel;

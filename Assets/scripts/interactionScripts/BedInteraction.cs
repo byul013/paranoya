@@ -8,6 +8,8 @@ public class BedInteraction : MonoBehaviour
 
     private bool playerInRange = false;
 
+    public bool playerSleep = false;
+
     private void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
@@ -34,6 +36,7 @@ public class BedInteraction : MonoBehaviour
                 shopCycle = 3;
                 Debug.Log("shop cycle reset to 3");
             }
+            playerSleep = true;
         }
         else
         {
