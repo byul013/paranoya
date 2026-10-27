@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class FarmSystemManager : MonoBehaviour
 {
     public enum plantedState {empty,planted}
     public enum plantState {empty, healthy, withering, dead}
-    [SerializeField]private plantedState currentPlantedState = plantedState.empty;
-    [SerializeField]private plantState currentPlantState = plantState.empty;
-
-    [Header("Script references")]
+    public enum openedPLantPanel {openedPlantPanel,closedplantPanel}
+    public plantedState currentPlantedState = plantedState.empty;
+    public plantState currentPlantState = plantState.empty;
 
 
     [Header("other references")]
@@ -17,68 +18,54 @@ public class FarmSystemManager : MonoBehaviour
     [SerializeField] private GameObject healthyPLantedPanel;
     [SerializeField] private GameObject witheringPlantPanel;
     [SerializeField] private GameObject deadPlantPanel;
+    [SerializeField] private GameObject wateringPanel;
+    [SerializeField] private Button WaterButton;
+    [SerializeField] plantWatering wateringScript;
 
 
     [Header("script variables")]
-    private bool isInPlantingRange = false;
     public bool isWithering = false;
     public bool isDead = false;
+    public bool isWatering;
 
-    private void Update()
+    public void DisplayPlantPanels()
     {
-        if(isInPlantingRange)
+        if (isWatering == true)
         {
-            if (currentPlantedState == plantedState.empty && currentPlantState == plantState.empty)
+            wateringPanel.SetActive(true);
+            witheringPlantPanel.SetActive(false);
+            deadPlantPanel.SetActive(false);
+            healthyPLantedPanel.SetActive(false);
+        }
+        if(currentPlantedState == plantedState.planted && isWatering == false)
+        {
+            //switch statement to switch panel based on the current state of the plant
+            switch (currentPlantState)
             {
-                if(Input.GetKeyDown(KeyCode.E))
-                {
-                    Debug.Log("Player opened empty planting menu");
-                }
-            }
+                case plantState.healthy:
+                witheringPlantPanel.SetActive(false);
+                deadPlantPanel.SetActive(false);
+                healthyPLantedPanel.SetActive(true);
+                break;
 
-            if(currentPlantedState == plantedState.planted)
-            {
-                //switch statement to switch panel based on the current state of the plant
-                switch (currentPlantState)
-                {
-                    case plantState.healthy:
-                    witheringPlantPanel.SetActive(false);
-                    deadPlantPanel.SetActive(false);
-                    healthyPLantedPanel.SetActive(true);
-                    break;
+                case plantState.withering:
+                deadPlantPanel.SetActive(false);
+                healthyPLantedPanel.SetActive(false);
+                witheringPlantPanel.SetActive(true);
+                break;
 
-                    case plantState.withering:
-                    deadPlantPanel.SetActive(false);
-                    healthyPLantedPanel.SetActive(false);
-                    witheringPlantPanel.SetActive(true);
-                    break;
-
-                    case plantState.dead:
-                    deadPlantPanel.SetActive(true);
-                    healthyPLantedPanel.SetActive(false);
-                    witheringPlantPanel.SetActive(false);
-                    break;
-                }
+                case plantState.dead:
+                deadPlantPanel.SetActive(true);
+                healthyPLantedPanel.SetActive(false);
+                witheringPlantPanel.SetActive(false);
+                break;
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnEnable()
     {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("player is in planting range");
-            isInPlantingRange = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("player has left planting range");
-            isInPlantingRange = false;
-        }
+        WaterButton.onClick.AddListener(StartWatering);
     }
 
     public void plantWitheringStatus()
@@ -94,5 +81,11 @@ public class FarmSystemManager : MonoBehaviour
             currentPlantState = plantState.dead;
             Debug.Log("plant state changed to dead");
         }
+    }
+
+    private void StartWatering()
+    {
+        isWatering = true;
+        DisplayPlantPanels();
     }
 }

@@ -9,5 +9,7 @@ public class plantData : ScriptableObject
     public int plantHealth;
     public int witheringFlag;
     public int deathFlag;
-    public sprite plantsprite;
+    public Sprite HealthyPlantsprite;
+    public Sprite WitheringPlantSprite;
+    public Sprite DeadPlantSprite;
 }

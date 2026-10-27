@@ -8,7 +8,6 @@ public class PlantLife : MonoBehaviour
     [SerializeField] private BedInteraction bedinteraction;
     [SerializeField] private FarmSystemManager farmSystem;
     private plantData planted;
-    [SerializeField] private FarmSystemManager farmSystem;
 
     [Header("script variables")]
     [SerializeField] private bool wasWateredToday;
@@ -29,13 +28,13 @@ public class PlantLife : MonoBehaviour
                 Debug.Log($"plant health was reduced by 1 current health = {planted.plantHealth}");
             }
             
-            if (planted.plantHealth =< planted.deathFlag)
+            if (planted.plantHealth <= planted.deathFlag)
             {
                 farmSystem.isDead = true;
                 farmSystem.plantWitheringStatus();
             }
 
-            if (planted.plantHealth =< planted.witheringFlag && planted.plantHealth > planted.deathFlag)
+            if (planted.plantHealth <= planted.witheringFlag && planted.plantHealth > planted.deathFlag)
             {
                 farmSystem.isWithering = true;
                 farmSystem.plantWitheringStatus();

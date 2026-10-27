@@ -7,7 +7,8 @@ public enum GameState
     PlayingGame,
     GameOver,
     GettingCalled,
-    AnsweredThePhone
+    AnsweredThePhone,
+    isPlayingMinigame
 }
 
 public class CurrentGameState : MonoBehaviour
