@@ -12,22 +12,28 @@ public class plantWatering : MonoBehaviour
 
     [Header("references")]
     [SerializeField] private Button StartWateringButton;
+    [SerializeField] private Button EndGameButton;
     [SerializeField] private GameObject plantWateringPanel;
-    [SerializeField] private int amountOfObjSpawning;
+    [SerializeField] public int amountOfObjSpawning;
     [SerializeField] GameObject wateringTarget;
+    [SerializeField] private GameObject finishMinigamePanel;
     
     [Header("variables")]
     [SerializeField] private bool isInMinigame;
     [SerializeField] private int AmountFinished;
     [SerializeField] private int MinObjectsSpawned = 5;
     [SerializeField] private int MaxObjectsSpawned = 10;
+    [SerializeField] private int maxPoolSize = 10;
+    [SerializeField] public int objectsClicked = 0;
+
+
 
     private ObjectPool<GameObject> pool;
 
     private void OnEnable()
     {
         StartWateringButton.onClick.AddListener(StartWateringPlant);
-        CalculateAmountOfObjSpawning();
+        EndGameButton.onClick.AddListener(StopMinigame);
     }
 
     private void OnDisable()
@@ -37,6 +43,7 @@ public class plantWatering : MonoBehaviour
 
     private void StartWateringPlant()
     {
+        CalculateAmountOfObjSpawning();
         plantWateringPanel.SetActive(true);
         isInMinigame = true;
         Debug.Log("Watering plant minigame Started");
@@ -45,7 +52,7 @@ public class plantWatering : MonoBehaviour
 
     private void CalculateAmountOfObjSpawning()
     {
-        amountOfObjSpawning = Random.Range(MinObjectsSpawned, MaxObjectsSpawned);
+        amountOfObjSpawning = Random.Range(MinObjectsSpawned, MaxObjectsSpawned + 1);
         StartObjectPool();
     }
 
@@ -59,22 +66,39 @@ public class plantWatering : MonoBehaviour
             actionOnDestroy: OnDestroyPoolObject,
             collectionCheck: true,
             defaultCapacity: amountOfObjSpawning,
-            maxSize: amountOfObjSpawning
+            maxSize: maxPoolSize
         );
+        
+        List<GameObject> prewarmedGameObjects = new List<GameObject>();
 
         for (int i=0; i < amountOfObjSpawning; i++)
         {
-            GameObject obj = pool.Get();
+            prewarmedGameObjects.Add(pool.Get());
+        }
+
+        foreach (GameObject obj in prewarmedGameObjects)
+        {
             pool.Release(obj);
         }
     }
 
-    private GameObject CreateObjects()
+    private void EndGame()
+    {
+        plantWateringPanel.SetActive(false);
+        finishMinigamePanel. SetActive(true);
+    }
+
+    private void StopMinigame()
+    {
+        
+    }
+
+    public GameObject CreateObjects()
     {
         return Instantiate(wateringTarget);
     }
 
-    private void OnTakeFromPool(GameObject obj)
+    public void OnTakeFromPool(GameObject obj)
     {
         obj.SetActive(true);
     }
@@ -84,7 +108,7 @@ public class plantWatering : MonoBehaviour
         obj.SetActive(false);
     }
 
-    private void OnDestroyPoolObject(GameObject obj)
+    public void OnDestroyPoolObject(GameObject obj)
     {
         Destroy(obj);
     }

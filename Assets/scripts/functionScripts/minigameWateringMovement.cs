@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class minigameWateringMovement : MonoBehaviour
 {
+    [Header("Script references")]
+    [SerializeField] private plantWatering plantWateringScript;
+
     [Header("minigameSettings")] 
     [SerializeField] private float arrivalDistance = 0.01f;
     [SerializeField] private Vector2 currentPosition;
     [SerializeField] private Vector2 targetPosition;
     [SerializeField] private Sprite wateringTarget;
     [SerializeField] private float speed = 3f;
+    [SerializeField] private bool isInClickingRange;
 
     private void Start()
     {
@@ -28,6 +32,19 @@ public class minigameWateringMovement : MonoBehaviour
             Debug.Log("Target has reached position");
             CalculateNextPosition();
         }
+
+        if (isInClickingRange)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("player clicked on the object");
+                plantWateringScript.objectsClicked ++;
+            }
+        }
+        if (plantWateringScript.objectsClicked == plantWateringScript.amountOfObjSpawning)
+        {
+            Debug.Log("Minigame completed!");
+        }
     }
 
     private void CalculateNextPosition()
@@ -36,5 +53,13 @@ public class minigameWateringMovement : MonoBehaviour
         float nextYposition = Random.Range(-489f, 489f);
 
         targetPosition = new Vector2(nextXposition, nextYposition);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Cursor"))
+        {
+            isInClickingRange = true;
+        }
     }
 }
